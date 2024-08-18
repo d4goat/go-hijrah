@@ -1,32 +1,62 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
+import { useDark, useToggle } from '@vueuse/core'
+import { Input } from 'postcss'
+
+const isDark = useDark()
+const toggleDark = useToggle(isDark)
 </script>
 
 <template>
-  <div class="contents">
-    <div class="p-5 flex flex-row">
-      <div class="flex-1">
-        <router-link :to="'/'">
-          <span>Muslim Hub</span>
+  <div class="contents sm:p-5 font-libre">
+    <div
+      class="p-5 flex flex-row dark:bg-secondary dark:text-primary bg-primary text-text border-b-2 border-border"
+    >
+      <div class="flex flex-1 items-center text-3xl">
+        <router-link :to="'/'" class="font-libre text-green-600 font-semibold">
+          Muslim Hub
         </router-link>
       </div>
-      <div class="flex gap-3">
+      <div class="flex gap-5 items-center">
         <router-link :to="'/quran'">
-          <span>Muslim Hub</span>
+          <span class="hover:text-green-600 hover:underline decoration-2 decoration-green-600 text-lg">Al Quran</span>
         </router-link>
         <router-link :to="'/'">
-          <span>Muslim Hub</span>
+          <span class="hover:text-green-600 hover:underline decoration-2 decoration-green-600 text-lg">Hadith</span>
         </router-link>
+        <router-link :to="'/asmaul_husna'">
+          <span class="hover:text-green-600 hover:underline decoration-2 decoration-green-600 text-lg">Asmaul Husna</span>
+        </router-link>
+        <router-link :to="'/jadwal_sholat'">
+          <span class="hover:text-green-600 hover:underline decoration-2 decoration-green-600 text-lg">Jadwal Sholat</span>
+        </router-link>
+        <label
+          for="toggleThree"
+          class="flex items-center cursor-pointer select-none text-dark dark:text-white"
+        >
+          <div class="relative">
+            <input type="checkbox" id="toggleThree" class="peer sr-only" v-model="isDark" />
+            <div class="block h-8 rounded-full bg-gray-300 dark:bg-gray-700 w-14"></div>
+            <div
+              class="absolute flex items-center justify-center w-6 h-6 transition-transform bg-white rounded-full dot dark:bg-gray-500 left-1 top-1 peer-checked:translate-x-full peer-checked:bg-blue-600"
+            >
+              <i :class="isDark ? 'fa-solid fa-moon text-black' : 'fa-solid fa-sun text-black'"></i>
+            </div>
+          </div>
+        </label>
       </div>
     </div>
-    <RouterView class="bg-primary dark:text-primary" />
+    <RouterView class="dark:bg-secondary dark:text-primary bg-primary text-text h-screen p-5" />
   </div>
 </template>
 
-<style>
-
-#app{
+<style scoped>
+#app {
   display: contents;
 }
 
+*{
+  transition: all 0.2s ease-in-out;
+}
 </style>
