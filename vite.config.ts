@@ -14,5 +14,14 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  server: {
+    proxy: {
+      '/api/islami': {
+        target: 'https://api-islami.herokuapp.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/islami/, '')
+      }
+    }
   }
 })
