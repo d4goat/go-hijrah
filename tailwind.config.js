@@ -9,9 +9,11 @@ export default {
     extend: {
       colors: {
         primary: '#ffffff',
-        secondary: '#171717',
+        secondary: '#0f1014',
+        component: '#14171c',
+        dropdown: '#26272e',
         text: '#000000',
-        border: '#414141'
+        border: '#414141',
       },
       fontSize: {
         'md' : '1.10rem'

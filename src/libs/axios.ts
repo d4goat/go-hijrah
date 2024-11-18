@@ -1,7 +1,7 @@
-import Axios from 'axios';  // Mengimpor axios dengan alias 'AX'
+import Axios from 'axios';
 import type { AxiosInstance } from 'axios';
 
-const axiosInstance: AxiosInstance = Axios.create({  // Menggunakan 'AX' untuk membuat instance
+const axiosInstance: AxiosInstance = Axios.create({
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

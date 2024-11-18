@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import axiosInstance from '@/libs/axios'
 import { useRoute } from 'vue-router'
+import { ArrowLeft } from 'lucide-vue-next';
 
 const route = useRoute()
 
@@ -24,10 +25,13 @@ onMounted(() => {
 
 <template>
   <div class="flex-col">
-    <div class="flex justify-end">
+    <div class="flex justify-between">
+      <router-link to="/quran" class="p-2 bg-dropdown rounded-lg">
+        <ArrowLeft :size="20" />
+      </router-link>
       <input
         type="search"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-56 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-0 focus:border focus:outline-none block w-56 p-2.5 dark:bg-component dark:border-gray-800 dark:placeholder-gray-400 dark:text-white"
         placeholder=" Cari Ayat.."
         name=""
         id=""
@@ -40,7 +44,7 @@ onMounted(() => {
             <span class="border-2 rounded-full border-border dark:border-white p-2 h-10">
               {{ ayat.nomorAyat }}
             </span>
-            <span class="text-2xl text-right">
+            <span class="text-3xl text-right">
               {{ ayat.teksArab }}
             </span>
           </div>
