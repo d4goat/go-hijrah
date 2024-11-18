@@ -12,7 +12,7 @@ interface Surah {
   tempatTurun: string
 }
 
-const surah = ref<Surah>([])
+const surah = ref<Surah[]>([])
 const tafsir = ref([])
 
 const getSurahList = async () => {
