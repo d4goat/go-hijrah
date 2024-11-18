@@ -32,6 +32,11 @@ const router = createRouter({
       name: 'jadwal_sholat',
       component: () => import("@/pages/JadwalSholat.vue")
     },
+    {
+      path: '/hadith',
+      name: 'hadith',
+      component: () => import('@/pages/Hadith.vue')
+    }
   ]
 })
 

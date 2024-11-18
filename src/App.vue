@@ -18,17 +18,21 @@ const toggleDark = useToggle(isDark)
         </router-link>
       </div>
       <div class="flex gap-5 items-center">
-        <router-link :to="'/quran'">
-          <span class="text-white dark:hover:text-green-600 hover:underline decoration-2 dark:decoration-green-600 text-lg">Al Quran</span>
+        <router-link :to="'/quran'" class="block relative group">
+          <span class="text-white dark:hover:text-green-600 text-lg">Al Quran</span>
+          <span class="absolute left-0 -bottom-1 w-full h-0.5 bg-green-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
         </router-link>
-        <router-link :to="'/'">
-          <span class="text-white dark:hover:text-green-600 hover:underline decoration-2 dark:decoration-green-600 text-lg">Hadith</span>
+        <router-link :to="'/hadith'" class="block relative group">
+          <span class="text-white dark:hover:text-green-600 text-lg">Hadits</span>
+          <span class="absolute left-0 -bottom-1 w-full h-0.5 bg-green-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
         </router-link>
-        <router-link :to="'/asmaul_husna'">
-          <span class="text-white dark:hover:text-green-600 hover:underline decoration-2 dark:decoration-green-600 text-lg">Asmaul Husna</span>
+        <router-link :to="'/asmaul_husna'" class="block relative group">
+          <span class="text-white dark:hover:text-green-600 text-lg">Asmaul Husna</span>
+          <span class="absolute left-0 -bottom-1 w-full h-0.5 bg-green-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
         </router-link>
-        <router-link :to="'/jadwal_sholat'">
-          <span class="text-white dark:hover:text-green-600 hover:underline decoration-2 dark:decoration-green-600 text-lg">Jadwal Sholat</span>
+        <router-link :to="'/jadwal_sholat'" class="block relative group">
+          <span class="text-white dark:hover:text-green-600 text-lg">Jadwal Sholat</span>
+          <span class="absolute left-0 -bottom-1 w-full h-0.5 bg-green-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
         </router-link>
         <label
           for="toggleThree"
