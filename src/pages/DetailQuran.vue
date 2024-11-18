@@ -6,7 +6,26 @@ import { ArrowLeft } from 'lucide-vue-next';
 
 const route = useRoute()
 
-const surah = ref({})
+interface Ayat {
+  audio: Object;
+  nomorAyat: number;
+  teksArab: string;
+  teksIndonesia: string;
+  teksLatin: string
+}
+
+interface Surah {
+  arti: string;
+  ayat: Ayat[];
+  audioFull: Record<string, unknown>;
+  deskripsi: string;
+  nama: string;
+  namaLatin: string;
+  nomor: number;
+  tempatTurun: string;
+}
+
+const surah = ref<Surah>({} as Surah)
 const tafsir = ref({})
 
 async function getSurah(nomor: any) {

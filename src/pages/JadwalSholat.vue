@@ -42,8 +42,6 @@ onMounted(() => {
 <template>
     <div class="flex">
         <div class="flex items-center gap-3">
-            <select2 placeholder="Cari Kota.." class="w-128 md:w-56" :options="kotas" v-model="initCity" >
-            </select2>
             <button type="button" class="bg-red-600 p-1.5 rounded-xl">Cari</button>
         </div>
         <div v-if="jadwal.length > 0">

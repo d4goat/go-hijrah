@@ -2,7 +2,14 @@
 import { ref, onMounted } from 'vue'
 import axiosInstance from '@/libs/axios'
 
-const asmaul_husna = ref([])
+interface Asmaul_Husna{
+  arab: string;
+  id: number;
+  indo: string;
+  latin: string
+}
+
+const asmaul_husna = ref<Asmaul_Husna[]>([])
 
 async function getAsmaul() {
   try {
