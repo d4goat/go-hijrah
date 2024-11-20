@@ -37,7 +37,7 @@ onMounted(() => {
         <div class="flex flex-wrap justify-center gap-3">
           <div v-for="item in surah" :key="item.nomor">
             <router-link :to="{ name: 'quran.surah', query: { surah: item.namaLatin, surah_ke: item.nomor } }">
-              <div class="w-128 p-2.5 border-2 rounded border-green-700 dark:border-border flex gap-3 items-center justify-between">
+              <div class="w-1/3 p-2.5 border-2 rounded border-green-700 dark:border-border flex gap-3 items-center justify-between">
                 <div class="flex gap-5 items-center">
                   <div>
                     {{ item.nomor }}
