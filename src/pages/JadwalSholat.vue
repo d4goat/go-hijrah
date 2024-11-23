@@ -1,3 +1,65 @@
+<template>
+  <div class="container mx-auto px-4">
+    <div class="flex flex-row sm:flex-col gap-4 justify-between">
+      <el-select-v2
+        v-model="kota"
+        style="width: 240px"
+        filterable
+        remote
+        clearable
+        :remote-method="remoteMethod"
+        :options="options"
+        :loading="loading"
+        @change="handleCityChange"
+        size="large"
+        placeholder="Cari Kota"
+      >
+        <template #loading>
+          <svg
+            class="animate-spin h-7 w-7 mx-2"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path class="opacity-50" fill="cyan" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+          </svg>
+        </template>
+      </el-select-v2>
+      <el-date-picker
+        v-model="date"
+        @change="refetch"
+        type="date"
+        placeholder="Pilih Tanggal"
+        size="large"
+      />
+    </div>
+    <div class="flex flex-col items-center space-y-8 mt-8">
+      <span class="capitalize text-4xl font-medium">
+        waktu sholat daerah {{ selectedCity ? selectedCity : 'Jakarta' }}
+      </span>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-6xl">
+        <template v-for="(time, name) in getFilteredJadwal" :key="name">
+          <div 
+            class="bg-white shadow-md dark:bg-emerald-800 rounded-xl p-3 flex items-center justify-between gap-2"
+          >
+            <div class="flex flex-col text-emerald-700 dark:text-white font-medium">
+              <span class="text-base capitalize">{{ name }}</span>
+              <span class="text-xl font-medium">{{ time }}</span>
+            </div>
+            <div class="w-14 h-14 flex items-center justify-center">
+              <img 
+                :src="`/${name}.png`" 
+                class="w-12 h-12 object-contain filter-invert-green dark:filter-invert-white"
+                alt=""
+              >
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script setup lang="ts">
 import { ref, onMounted, computed, watch } from 'vue'
 import axiosInstance from '@/libs/axios'
@@ -12,6 +74,12 @@ interface ListItem {
 interface City {
   id: string
   lokasi: string
+}
+
+interface JadwalSholat {
+  date?: string
+  tanggal?: string
+  [key: string]: string | undefined
 }
 
 const date = ref()
@@ -89,67 +157,11 @@ const {
   },
   enabled: true
 })
-</script>
 
-<template>
-  <div class="container mx-auto px-4">
-    <div class="flex flex-row sm:flex-col gap-4 justify-between">
-      <el-select-v2
-        v-model="kota"
-        style="width: 240px"
-        filterable
-        remote
-        clearable
-        :remote-method="remoteMethod"
-        :options="options"
-        :loading="loading"
-        @change="handleCityChange"
-        size="large"
-        placeholder="Cari Kota"
-      >
-        <template #loading>
-          <svg
-            class="animate-spin h-7 w-7 mx-2"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path class="opacity-50" fill="cyan" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-          </svg>
-        </template>
-      </el-select-v2>
-      <el-date-picker
-        v-model="date"
-        @change="refetch"
-        type="date"
-        placeholder="Pilih Tanggal"
-        size="large"
-      />
-    </div>
-    <div class="flex flex-col items-center space-y-8 mt-8">
-      <span class="capitalize text-4xl font-medium">
-        waktu sholat daerah {{ selectedCity ? selectedCity : 'Jakarta' }}
-      </span>
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-6xl">
-        <template v-for="(time, name) in jadwal.jadwal" :key="name">
-          <div 
-            v-if="name !== 'date' && name !== 'tanggal'" 
-            class="bg-white shadow-md dark:bg-emerald-800 rounded-xl p-3 flex items-center justify-between gap-2"
-          >
-            <div class="flex flex-col text-emerald-700 dark:text-white font-medium">
-              <span class="text-base capitalize">{{ name }}</span>
-              <span class="text-xl font-medium">{{ time }}</span>
-            </div>
-            <div class="w-14 h-14 flex items-center justify-center">
-              <img 
-                :src="`/public/${name}.png`" 
-                class="w-12 h-12 object-contain filter-invert-green dark:filter-invert-white"
-                :alt="name"
-              >
-            </div>
-          </div>
-        </template>
-      </div>
-    </div>
-  </div>
-</template>
+// Computed property untuk memfilter jadwal
+const getFilteredJadwal = computed(() => {
+  if (!jadwal.value?.jadwal) return {}
+  const { date, tanggal, ...filteredJadwal } = jadwal.value.jadwal as JadwalSholat
+  return filteredJadwal
+})
+</script>
