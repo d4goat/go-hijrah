@@ -12,7 +12,6 @@ const toggleMobileMenu = () => {
 }
 
 const navLinks = [
-  { to: '/', label: 'Home' },
   { to: '/quran', label: 'Al Quran' },
   { to: '/hadith', label: 'Hadits' },
   { to: '/asmaul_husna', label: 'Asmaul Husna' },
@@ -52,7 +51,7 @@ onMounted(() => isDark.value = true)
           class="block relative group"
         >
           <span class="text-white dark:hover:text-green-600 text-lg">{{ link.label }}</span>
-          <span class="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-green-600"></span>
+          <span class="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-white dark:bg-green-600"></span>
         </router-link>
         
         <label
@@ -107,7 +106,7 @@ onMounted(() => isDark.value = true)
     <TransitionRoot appear :show="isMobileMenuOpen" as="template">
       <TransitionChild 
         enter="transition-all duration-300 ease-out" 
-        enter-from="opacity-0 translate-y-[-20px]"
+        enter-from="opacity-50 translate-y-[-20px]"
         enter-to="opacity-100 translate-y-0"
         leave="transition-all duration-300 ease-in"
         leave-from="opacity-100 translate-y-0"
@@ -132,7 +131,7 @@ onMounted(() => isDark.value = true)
       </TransitionChild>
     </TransitionRoot>
 
-    <RouterView class="min-h-screen p-5 transition-colors duration-300 bg-gradient-to-b from-white via-green-50/30 to-green-500/30 dark:from-gray-900 dark:via-gray-800/50 dark:to-green-900/30 text-text dark:text-primary" />
+    <RouterView class="min-h-screen p-5 transition-colors duration-300 bg-emerald-50 dark:bg-component text-text dark:text-primary" />
   </div>
 </template>
 

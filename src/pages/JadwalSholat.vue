@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import axiosInstance from '@/libs/axios'
 import { useQuery } from '@tanstack/vue-query'
 import { ElMessage } from 'element-plus'
@@ -10,12 +10,12 @@ interface ListItem {
 }
 
 interface City {
-  id: number
+  id: string
   lokasi: string
 }
 
 const date = ref()
-const selectedCity = ref<string>("Jakarta")
+const selectedCity = ref<string>("")
 const kota = ref<string>('')
 
 const { data: city, isLoading: isLoadingCity } = useQuery({
@@ -24,7 +24,6 @@ const { data: city, isLoading: isLoadingCity } = useQuery({
     await axiosInstance
       .get('https://api.myquran.com/v2/sholat/kota/semua')
       .then((res: any) => res.data.data)
-  // onError: (err: any) => ElMessage.error(err.response.data.message)
 })
 
 const cities = computed(() =>
@@ -34,6 +33,16 @@ const cities = computed(() =>
   }))
 )
 
+// Watch untuk mengupdate selectedCity ketika cities tersedia
+watch([cities, kota], ([newCities, newKota]) => {
+  if (newCities && newKota) {
+    const found = newCities.find((city: ListItem) => city.value === newKota)
+    if (found) {
+      selectedCity.value = found.label
+    }
+  }
+}, { immediate: true })
+
 const options = ref<ListItem[]>([])
 const loading = ref(false)
 
@@ -42,24 +51,25 @@ const remoteMethod = (query: string) => {
     loading.value = true
     setTimeout(() => {
       loading.value = false
-      options.value = cities.value.filter((item: any) => {
+      options.value = cities.value?.filter((item: ListItem) => {
         return item.label.toLowerCase().includes(query.toLowerCase())
-      })
-    }, 1000)
+      }) || []
+    }, 200)
   } else {
     options.value = []
   }
 }
 
-async function getJadwal(kota: any, year: any, month: any, date: any) {
-  try {
-    const response = await axiosInstance.get(
-      `https://api.myquran.com/v2/sholat/jadwal/${kota}/${year}/${month}/${date}`
-    )
-    jadwal.value = response.data.data
-  } catch (error) {
-    console.error(error)
+const handleCityChange = (value: string) => {
+  if (value && cities.value) {
+    const selected = cities.value.find((city: ListItem) => city.value === value)
+    if (selected) {
+      selectedCity.value = selected.label
+    }
+  } else {
+    selectedCity.value = ""
   }
+  refetch()
 }
 
 const {
@@ -73,7 +83,6 @@ const {
     const year = selectedDate.getFullYear()
     const month = selectedDate.getMonth() + 1
     const day = selectedDate.getDate()
-
     return await axiosInstance
       .get(`https://api.myquran.com/v2/sholat/jadwal/${kota.value || 1301}/${year}/${month}/${day}`)
       .then((res) => res.data.data)
@@ -83,8 +92,8 @@ const {
 </script>
 
 <template>
-  <div class="container">
-    <div class="flex flex-row justify-between">
+  <div class="container mx-auto px-4">
+    <div class="flex flex-row sm:flex-col gap-4 justify-between">
       <el-select-v2
         v-model="kota"
         style="width: 240px"
@@ -94,7 +103,7 @@ const {
         :remote-method="remoteMethod"
         :options="options"
         :loading="loading"
-        @change="() => {refetch, selectedCity = kota}"
+        @change="handleCityChange"
         size="large"
         placeholder="Cari Kota"
       >
@@ -117,8 +126,30 @@ const {
         size="large"
       />
     </div>
-    <div class="flex justify-center">
-        <span> {{ selectedCity }} </span>
+    <div class="flex flex-col items-center space-y-8 mt-8">
+      <span class="capitalize text-4xl font-medium">
+        waktu sholat daerah {{ selectedCity ? selectedCity : 'Jakarta' }}
+      </span>
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-6xl">
+        <template v-for="(time, name) in jadwal.jadwal" :key="name">
+          <div 
+            v-if="name !== 'date' && name !== 'tanggal'" 
+            class="bg-white shadow-md dark:bg-emerald-800 rounded-xl p-3 flex items-center justify-between gap-2"
+          >
+            <div class="flex flex-col text-emerald-700 dark:text-white font-medium">
+              <span class="text-base capitalize">{{ name }}</span>
+              <span class="text-xl font-medium">{{ time }}</span>
+            </div>
+            <div class="w-14 h-14 flex items-center justify-center">
+              <img 
+                :src="`/public/${name}.png`" 
+                class="w-12 h-12 object-contain filter-invert-green dark:filter-invert-white"
+                :alt="name"
+              >
+            </div>
+          </div>
+        </template>
+      </div>
     </div>
   </div>
 </template>

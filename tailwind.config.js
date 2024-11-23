@@ -14,6 +14,7 @@ export default {
         dropdown: '#26272e',
         text: '#000000',
         border: '#414141',
+        palette: 'CBEDD5'
       },
       fontSize: {
         'md' : '1.10rem'
