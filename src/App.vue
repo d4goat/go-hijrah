@@ -132,7 +132,7 @@ onMounted(() => isDark.value = true)
       </TransitionChild>
     </TransitionRoot>
 
-    <RouterView class="min-h-screen p-5 transition-colors duration-300 bg-gradient-to-b from-white via-blue-50/30 to-green-50/30 dark:from-gray-900 dark:via-gray-800/50 dark:to-green-900/30 text-text dark:text-primary" />
+    <RouterView class="min-h-screen p-5 transition-colors duration-300 bg-gradient-to-b from-white via-green-50/30 to-green-500/30 dark:from-gray-900 dark:via-gray-800/50 dark:to-green-900/30 text-text dark:text-primary" />
   </div>
 </template>
 

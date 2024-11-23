@@ -20,10 +20,6 @@
                     <span class="relative z-10 font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors duration-300">
                       Muslim Hub
                     </span>
-                    <span 
-                      class="absolute bottom-0 left-0 h-3 bg-emerald-100 dark:bg-emerald-900/50 -z-0"
-                      :class="isVisible ? 'w-full transition-all duration-500 delay-1000' : 'w-0'"
-                    ></span>
                   </span>
                 </h1>
               </div>
@@ -72,7 +68,7 @@
     </div>
   </template>
   
-  <script setup>
+  <script setup lang="ts">
   import { ref, onMounted } from 'vue'
   import { TransitionRoot, TransitionChild } from '@headlessui/vue'
   
