@@ -78,7 +78,7 @@ const {
       .get(`https://api.myquran.com/v2/sholat/jadwal/${kota.value || 1301}/${year}/${month}/${day}`)
       .then((res) => res.data.data)
   },
-  enabled: true // or set a condition if needed
+  enabled: true
 })
 </script>
 

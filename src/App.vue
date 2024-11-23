@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { TransitionRoot, TransitionChild } from '@headlessui/vue';
-import { ref } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
-import { useDark, useToggle } from '@vueuse/core'
 import { Menu, X } from 'lucide-vue-next';
 
-const isDark = useDark()
-const toggleDark = useToggle(isDark)
+const isDark = ref(false)
 const isMobileMenuOpen = ref(false)
 
 const toggleMobileMenu = () => {
@@ -14,20 +12,33 @@ const toggleMobileMenu = () => {
 }
 
 const navLinks = [
+  { to: '/', label: 'Home' },
   { to: '/quran', label: 'Al Quran' },
   { to: '/hadith', label: 'Hadits' },
   { to: '/asmaul_husna', label: 'Asmaul Husna' },
   { to: '/jadwal_sholat', label: 'Jadwal Sholat' }
 ]
+
+watch(isDark, (newValue) => {
+  if (newValue) {
+    document.documentElement.classList.add('dark')
+    localStorage.setItem('theme', 'dark')
+  } else {
+    document.documentElement.classList.remove('dark')
+    localStorage.setItem('theme', 'light')
+  }
+}, { immediate: true })
+
+onMounted(() => isDark.value = true)
 </script>
 
 <template>
-  <div class="contents sm:p-5 font-libre">
+  <div class="contents sm:p-5 font-poppins">
     <div
       class="p-5 flex flex-row justify-between items-center dark:bg-secondary dark:text-primary bg-green-700 text-text border-b-2 border-gray-300 dark:border-border"
     >
       <div class="flex items-center text-3xl">
-        <router-link :to="'/'" class="dark:text-green-600 text-white font-semibold">
+        <router-link :to="'/'" class="dark:text-emerald-500 dark:hover:text-emerald-700 text-white font-semibold">
           Muslim Hub
         </router-link>
       </div>
@@ -41,7 +52,7 @@ const navLinks = [
           class="block relative group"
         >
           <span class="text-white dark:hover:text-green-600 text-lg">{{ link.label }}</span>
-          <span class="absolute left-0 -bottom-1 w-full h-0.5 bg-green-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
+          <span class="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-green-600"></span>
         </router-link>
         
         <label
@@ -121,7 +132,7 @@ const navLinks = [
       </TransitionChild>
     </TransitionRoot>
 
-    <RouterView class="dark:bg-component dark:text-primary bg-primary text-text min-h-screen p-5" />
+    <RouterView class="min-h-screen p-5 transition-colors duration-300 bg-gradient-to-b from-white via-blue-50/30 to-green-50/30 dark:from-gray-900 dark:via-gray-800/50 dark:to-green-900/30 text-text dark:text-primary" />
   </div>
 </template>
 

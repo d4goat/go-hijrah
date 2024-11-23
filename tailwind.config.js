@@ -19,7 +19,8 @@ export default {
         'md' : '1.10rem'
       },
       fontFamily: {
-        libre : ['Libre Franklin', 'sans-serif']
+        poppins : ['Poppins', 'sans-serif'],
+        monserrat: ['Montserrat', 'sans-serif']
       },
       screens: {
         '2xl': {'max': '1535px'},
