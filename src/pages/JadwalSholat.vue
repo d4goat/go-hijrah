@@ -1,62 +1,69 @@
 <template>
   <div class="container mx-auto px-4">
-    <div class="flex flex-row sm:flex-col gap-4 justify-between">
-      <el-select-v2
-        v-model="kota"
-        style="width: 240px"
-        filterable
-        remote
-        clearable
-        :remote-method="remoteMethod"
-        :options="options"
-        :loading="loading"
-        @change="handleCityChange"
-        size="large"
-        placeholder="Cari Kota"
-      >
-        <template #loading>
-          <svg
-            class="animate-spin h-7 w-7 mx-2"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path class="opacity-50" fill="cyan" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
-          </svg>
-        </template>
-      </el-select-v2>
-      <el-date-picker
-        v-model="date"
-        @change="refetch"
-        type="date"
-        placeholder="Pilih Tanggal"
-        size="large"
-      />
+    <div class="flex flex-row sm:flex-col gap-4 justify-end">
+      <el-date-picker v-model="date" @change="refetch" type="date" placeholder="Pilih Tanggal" size="large" />
     </div>
     <div class="flex flex-col items-center space-y-8 mt-8">
-      <span class="capitalize text-4xl font-medium">
-        waktu sholat daerah {{ selectedCity ? selectedCity : 'Jakarta' }}
-      </span>
+      <div class="flex flex-col items-center space-y-3">
+        <span class="capitalize text-4xl font-semibold flex items-center">
+          waktu sholat daerah {{ selectedCity ? selectedCity : 'Kota Jakarta' }} <chevron-down :size="30" class="ml-2 cursor-pointer" @click="isOpen = true" />
+        </span>
+        <div class="flex flex-col items-center">
+          <span class="font-medium md:text-sm text-2xl"> {{ date.toLocaleDateString('id-ID', { weekday: 'long' }) }}, {{
+            date.toLocaleDateString('id-ID', { day: '2-digit' }) }} {{ date.toLocaleDateString('id-ID', {
+              month:
+            'long'
+            }) }} </span>
+          <span class="font-medium text-lg dark:text-green-200/50"> {{ hijr.date[1] }} </span>
+        </div>
+      </div>
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-6xl">
         <template v-for="(time, name) in getFilteredJadwal" :key="name">
-          <div 
-            class="bg-white shadow-md dark:bg-emerald-800 rounded-xl p-3 flex items-center justify-between gap-2"
-          >
+          <div class="bg-white shadow-md dark:bg-emerald-800 rounded-xl p-3 flex items-center justify-between gap-2">
             <div class="flex flex-col text-emerald-700 dark:text-white font-medium">
               <span class="text-base capitalize">{{ name }}</span>
               <span class="text-xl font-medium">{{ time }}</span>
             </div>
             <div class="w-14 h-14 flex items-center justify-center">
-              <img 
-                :src="`/${name}.png`" 
-                class="w-12 h-12 object-contain filter-invert-green dark:filter-invert-white"
-                alt=""
-              >
+              <img :src="`/${name}.png`" class="w-12 h-12 object-contain filter-invert-green dark:filter-invert-white"
+                alt="">
             </div>
           </div>
         </template>
       </div>
     </div>
+
+    <TransitionRoot appear :show="isOpen" as="template">
+      <Dialog as="div" @close="isOpen = false" class="relative z-10">
+        <transition-child as="template" enter="duration-300 ease-out" enter-from="opacity-0" enter-to="opacity-100" leave="duration-300 ease-in" leave-from="opacity-100" leave-to="opacity-0">
+          <div class="fixed inset-0 bg-black/25"></div>
+        </transition-child>
+        <div class="fixed inset-0 overflow-y-auto ">
+          <div class="flex min-h-full items-center justify-center p-4 text-center">
+            <transition-child as="template" enter="duration-300 ease-out"
+            enter-from="opacity-0 scale-95"
+            enter-to="opacity-100 scale-100"
+            leave="duration-200 ease-in"
+            leave-from="opacity-100 scale-100"
+            leave-to="opacity-0 scale-95" >
+              <dialog-panel class="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white dark:bg-component p-10 text-left align-middle shadow-xl transition-all">
+                <dialog-title as="h3" class="text-xl font-medium leading-5 mb-3 text-black dark:text-white pb-3">
+                  Cari Kota
+                </dialog-title>
+                <el-select-v2 v-model="kota" class="w-full capitalize" filterable remote :remote-method="remoteMethod"
+                  :options="options" :loading="loading" @change="handleCityChange" size="large" placeholder="Kota Jakarta, Kota Surabaya, etc.">
+                  <template #loading>
+                    <svg class="animate-spin h-7 w-7 mx-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <path class="opacity-50" fill="cyan" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                    </svg>
+                  </template>
+                </el-select-v2>
+              </dialog-panel>
+            </transition-child>
+          </div>
+        </div>
+      </Dialog>
+    </TransitionRoot>
   </div>
 </template>
 
@@ -65,6 +72,8 @@ import { ref, onMounted, computed, watch } from 'vue'
 import axiosInstance from '@/libs/axios'
 import { useQuery } from '@tanstack/vue-query'
 import { ElMessage } from 'element-plus'
+import { ChevronDown } from 'lucide-vue-next'
+import { Dialog, DialogPanel, DialogTitle, TransitionRoot, TransitionChild } from '@headlessui/vue'
 
 interface ListItem {
   value: string
@@ -82,7 +91,9 @@ interface JadwalSholat {
   [key: string]: string | undefined
 }
 
-const date = ref()
+const isOpen = ref(false)
+
+const date = ref(new Date())
 const selectedCity = ref<string>("")
 const kota = ref<string>('')
 
@@ -106,7 +117,7 @@ watch([cities, kota], ([newCities, newKota]) => {
   if (newCities && newKota) {
     const found = newCities.find((city: ListItem) => city.value === newKota)
     if (found) {
-      selectedCity.value = found.label
+      selectedCity.value = found.label.toLowerCase()
     }
   }
 }, { immediate: true })
@@ -131,6 +142,7 @@ const remoteMethod = (query: string) => {
 const handleCityChange = (value: string) => {
   if (value && cities.value) {
     const selected = cities.value.find((city: ListItem) => city.value === value)
+    isOpen.value = false
     if (selected) {
       selectedCity.value = selected.label
     }
@@ -156,6 +168,11 @@ const {
       .then((res) => res.data.data)
   },
   enabled: true
+})
+
+const { data: hijr, isLoading: isLoadingHijr, refetch: refetchHijr } = useQuery({
+  queryKey: ['calendar', 'hijriyah'],
+  queryFn: async () => await axiosInstance.get('https://api.myquran.com/v2/cal/hijr').then((res: any) => res.data.data)
 })
 
 // Computed property untuk memfilter jadwal
