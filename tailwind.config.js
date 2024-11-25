@@ -35,6 +35,9 @@ export default {
       },
       animation: {
         'fade': 'fade 0.35s ease-in-out',
+        'pulse-slow': 'pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'pulse-slower': 'pulse-slower 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'pulse-fast': 'pulse-fast 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       keyframes: {
         fadeUp: {
@@ -45,7 +48,30 @@ export default {
             opacity: '1',
           },
         },
-      }
+        'pulse-slow': {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.6' },
+        },
+        'pulse-slower': {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.5' },
+        },
+        'pulse-fast': {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.7' },
+        },
+        // Optional: More complex pulse with scale
+        'pulse-scale': {
+          '0%, 100%': { 
+            opacity: '1', 
+            transform: 'scale(1)' 
+          },
+          '50%': { 
+            opacity: '0.8', 
+            transform: 'scale(0.98)' 
+          },
+      },
+      },
     },
   },
   plugins: [],
