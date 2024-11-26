@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import axiosInstance from '@/libs/axios'
+import axios from '@/libs/axios'
 
-interface Asmaul_Husna{
-  arab: string;
-  id: number;
-  indo: string;
+interface Asmaul_Husna {
+  arab: string
+  id: number
+  indo: string
   latin: string
 }
 
@@ -13,7 +13,7 @@ const asmaul_husna = ref<Asmaul_Husna[]>([])
 
 async function getAsmaul() {
   try {
-    const response = await axiosInstance.get('https://api.myquran.com/v2/husna/semua')
+    const response = await axios.get('https://api.myquran.com/v2/husna/semua')
     asmaul_husna.value = response.data.data
   } catch (error) {
     console.error(error)
@@ -38,13 +38,13 @@ onMounted(() => {
                 {{ asmaul.arab }}
               </span>
               <div class="flex flex-col gap-2">
-                  <span class="font-bold text-2xl">
-                      {{ asmaul.latin }}
-                    </span>
-                    <span>
-                        {{ asmaul.indo }}
-                    </span>
-                </div>
+                <span class="font-bold text-2xl">
+                  {{ asmaul.latin }}
+                </span>
+                <span>
+                  {{ asmaul.indo }}
+                </span>
+              </div>
             </div>
           </div>
         </div>

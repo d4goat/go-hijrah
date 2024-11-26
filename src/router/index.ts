@@ -36,6 +36,11 @@ const router = createRouter({
       path: '/hadith',
       name: 'hadith',
       component: () => import('@/pages/Hadith.vue')
+    },
+    {
+      path: '/hadith/list',
+      name: 'hadith.list',
+      component: () => import("@/pages/HadithList.vue")
     }
   ]
 })

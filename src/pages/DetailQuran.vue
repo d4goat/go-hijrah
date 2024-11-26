@@ -1,28 +1,28 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import axiosInstance from '@/libs/axios'
+import axios from '@/libs/axios'
 import { useRoute } from 'vue-router'
-import { ArrowLeft } from 'lucide-vue-next';
+import { ArrowLeft } from 'lucide-vue-next'
 
 const route = useRoute()
 
 interface Ayat {
-  audio: Object;
-  nomorAyat: number;
-  teksArab: string;
-  teksIndonesia: string;
+  audio: Object
+  nomorAyat: number
+  teksArab: string
+  teksIndonesia: string
   teksLatin: string
 }
 
 interface Surah {
-  arti: string;
-  ayat: Ayat[];
-  audioFull: Record<string, unknown>;
-  deskripsi: string;
-  nama: string;
-  namaLatin: string;
-  nomor: number;
-  tempatTurun: string;
+  arti: string
+  ayat: Ayat[]
+  audioFull: Record<string, unknown>
+  deskripsi: string
+  nama: string
+  namaLatin: string
+  nomor: number
+  tempatTurun: string
 }
 
 const surah = ref<Surah>({} as Surah)
@@ -30,7 +30,7 @@ const tafsir = ref({})
 
 async function getSurah(nomor: any) {
   try {
-    const response = await axiosInstance.get(`https://equran.id/api/v2/surat/${nomor}`)
+    const response = await axios.get(`https://equran.id/api/v2/surat/${nomor}`)
     surah.value = response.data.data
   } catch (error) {
     console.error(error)
