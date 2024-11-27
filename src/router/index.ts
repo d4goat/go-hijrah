@@ -5,48 +5,65 @@ import 'nprogress/nprogress.css'
 NProgress.configure({ showSpinner : false })
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(import.meta.env.BASE_URL || '/'),
   routes: [
     {
-      path: "/",
-      name: "home",
-      component: () => import("@/pages/Home.vue")
+      path: '/',
+      component: () => import('@/layouts/MainLayout.vue'),
+      children: [
+        {
+          path: "/",
+          name: "home",
+          component: () => import("@/pages/Home.vue")
+        },
+        {
+          path: '/quran',
+          name: 'quran',
+          component: () => import("@/pages/Quran.vue")
+        },
+        {
+          path: '/quran/surah',
+          name: 'quran.surah',
+          component: () => import("@/pages/DetailQuran.vue")
+        },
+        {
+          path: '/asmaul_husna',
+          name: 'asmaul_husna',
+          component: () => import("@/pages/Asmaul_Husna.vue")
+        },
+        {
+          path: '/jadwal_sholat',
+          name: 'jadwal_sholat',
+          component: () => import("@/pages/JadwalSholat.vue")
+        },
+        {
+          path: '/hadith',
+          name: 'hadith',
+          component: () => import('@/pages/Hadith.vue')
+        },
+        {
+          path: '/hadith/list',
+          name: 'hadith.list',
+          component: () => import("@/pages/HadithList.vue")
+        },
+      ]
     },
     {
-      path: '/quran',
-      name: 'quran',
-      component: () => import("@/pages/Quran.vue")
+      path: '/404',
+      name: '/404',
+      component: () => import('@/pages/NotFound.vue')
     },
     {
-      path: '/quran/surah',
-      name: 'quran.surah',
-      component: () => import("@/pages/DetailQuran.vue")
-    },
-    {
-      path: '/asmaul_husna',
-      name: 'asmaul_husna',
-      component: () => import("@/pages/Asmaul_Husna.vue")
-    },
-    {
-      path: '/jadwal_sholat',
-      name: 'jadwal_sholat',
-      component: () => import("@/pages/JadwalSholat.vue")
-    },
-    {
-      path: '/hadith',
-      name: 'hadith',
-      component: () => import('@/pages/Hadith.vue')
-    },
-    {
-      path: '/hadith/list',
-      name: 'hadith.list',
-      component: () => import("@/pages/HadithList.vue")
+      path: '/:pathMatch(.*)*',
+      redirect: '/404',
     }
   ]
 })
 
-router.beforeEach((to, from, next) => {
-  NProgress.start()
+router.beforeEach(async (to, from, next) => {
+  if(to.name){
+    NProgress.start()
+  }
   next()
 })
 

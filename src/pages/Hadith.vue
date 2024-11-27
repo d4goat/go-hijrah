@@ -12,7 +12,7 @@ const { data } = useQuery({
 
 <template>
   <main class="flex justify-center items-center">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
+    <div class="grid grid-cols-1 gap-8 w-full max-w-6xl">
       <div
         v-for="hadith in data"
         :key="hadith.id"

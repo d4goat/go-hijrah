@@ -12,12 +12,12 @@
       
         <div v-if="!isFetchingJadwal && !isFetchingHijr" class="flex flex-col items-center space-y-8 mt-8">
           <div class="flex flex-col items-center space-y-3">
-            <span class="capitalize text-4xl font-semibold flex items-center">
+            <span class="capitalize text-4xl md:text-lg font-semibold flex items-center">
               waktu sholat daerah {{ selectedCity ? selectedCity : 'Kota Jakarta' }}
-              <chevron-down :size="30" class="ml-2 cursor-pointer" @click="isOpen = true" />
+              <chevron-down :size="20" class="ml-2 cursor-pointer" @click="isOpen = true" />
             </span>
             <div class="flex items-center gap-5">
-              <ChevronLeft class="cursor-pointer" :size="33" @click="handleDateChange(-1)" />
+              <ChevronLeft class="cursor-pointer" @click="handleDateChange(-1)" />
               <div class="flex flex-col items-center">
                 <span class="font-medium md:text-sm text-2xl">
                   {{ date.toLocaleDateString('id-ID', { weekday: 'long' }) }},
@@ -28,9 +28,9 @@
                     })
                   }}
                 </span>
-                <span class="font-medium text-lg "> {{ hijr.date[1] }} </span>
+                <span class="font-medium text-lg md:text-xs"> {{ hijr.date[1] }} </span>
               </div>
-              <ChevronRight class="cursor-pointer" :size="33" @click="handleDateChange(1)" />
+              <ChevronRight class="cursor-pointer" @click="handleDateChange(1)" />
             </div>
           </div>
           <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-6xl">
@@ -55,7 +55,7 @@
         </div>
 
     <div v-else class="animate-pulse flex justify-center py-10">
-      <span class="text-3xl font-medium">Loading...</span>
+      <span class="text-3xl md:text-lg font-medium">Loading...</span>
     </div>
 
     <TransitionRoot appear :show="isOpen" as="template">

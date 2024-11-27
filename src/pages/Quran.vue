@@ -48,10 +48,10 @@ onMounted(() => {
                   </div>
                   <div class="flex flex-col">
                     <div class="flex gap-2 items-center">
-                      <span class="font-semibold text-md">
+                      <span class="font-semibold text-md md:text-sm">
                         {{ item.namaLatin }}
                       </span>
-                      <span class=""> ( {{ item.arti }} ) </span>
+                      <span class="md:text-xs"> ( {{ item.arti }} ) </span>
                     </div>
                     <span class="">
                       {{ item.tempatTurun }} • {{ item.jumlahAyat }} Ayat
