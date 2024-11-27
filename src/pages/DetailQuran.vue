@@ -45,12 +45,9 @@ onMounted(() => {
 <template>
   <div class="flex-col">
     <div class="flex justify-between">
-      <router-link to="/quran" class="p-2 bg-dropdown rounded-lg">
-        <ArrowLeft :size="20" />
-      </router-link>
       <input
         type="search"
-        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-0 focus:border focus:outline-none block w-56 p-2.5 dark:bg-component dark:border-gray-800 dark:placeholder-gray-400 dark:text-white"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-0 focus:border focus:outline-none block w-56 p-2.5"
         placeholder=" Cari Ayat.."
         name=""
         id=""
@@ -58,12 +55,12 @@ onMounted(() => {
     </div>
     <div v-for="ayat in surah.ayat" :key="ayat.nomorAyat">
       <div class="">
-        <div class="flex flex-col gap-3 px-3 py-5 my-5 rounded border-solid border-2 border-border">
-          <div class="flex justify-between gap-5 px-2">
-            <span class="border-2 rounded-full border-border dark:border-white p-2 h-10">
+        <div class="flex flex-col gap-3 px-3 py-5 my-5 rounded-md bg-white shadow-md">
+          <div class="flex flex-col gap-5 px-2">
+            <div class="rounded-full flex justify-center items-center border border-black w-9 h-9">
               {{ ayat.nomorAyat }}
-            </span>
-            <span class="text-3xl text-right">
+            </div>
+            <span class="text-3xl md:text-2xl text-right">
               {{ ayat.teksArab }}
             </span>
           </div>

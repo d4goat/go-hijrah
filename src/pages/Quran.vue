@@ -31,18 +31,18 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col">
+  <div class="flex flex-col py-20">
     <div class="flex-1">
       <div v-if="surah.length > 0">
-        <div class="flex flex-wrap justify-center gap-3">
+        <div class="flex flex-wrap justify-center gap-7">
           <div v-for="item in surah" :key="item.nomor">
             <router-link
               :to="{ name: 'quran.surah', query: { surah: item.namaLatin, surah_ke: item.nomor } }"
             >
               <div
-                class="w-128 md:w-80 p-2.5 border-2 rounded border-green-700 dark:border-border flex flex-wrap gap-3 items-center justify-between"
+                class="w-128 sm:w-84 p-4 rounded-md bg-white shadow-md flex flex-wrap gap-3 items-center justify-between"
               >
-                <div class="flex gap-5 items-center">
+              <div class="flex gap-5 items-center">
                   <div>
                     {{ item.nomor }}
                   </div>
@@ -51,17 +51,12 @@ onMounted(() => {
                       <span class="font-semibold text-md">
                         {{ item.namaLatin }}
                       </span>
-                      <span class="dark:text-gray-500"> ( {{ item.arti }} ) </span>
+                      <span class=""> ( {{ item.arti }} ) </span>
                     </div>
-                    <span class="dark:text-gray-500">
+                    <span class="">
                       {{ item.tempatTurun }} • {{ item.jumlahAyat }} Ayat
                     </span>
                   </div>
-                </div>
-                <div class="">
-                  <span>
-                    {{ item.nama }}
-                  </span>
                 </div>
               </div>
             </router-link>

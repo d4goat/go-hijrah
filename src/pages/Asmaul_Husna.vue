@@ -31,7 +31,7 @@ onMounted(() => {
       <div class="flex flex-wrap justify-center gap-3">
         <div v-for="asmaul in asmaul_husna" :key="asmaul.id">
           <div
-            class="w-64 h-48 p-2.5 border-2 rounded border-green-600 dark:border-border flex gap-3 items-center"
+            class="w-64 h-48 p-2.5 border-2 rounded border-green-600 flex gap-3 items-center"
           >
             <div class="flex flex-auto flex-col gap-4 text-center">
               <span class="text-4xl">

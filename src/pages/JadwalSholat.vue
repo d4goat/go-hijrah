@@ -1,14 +1,5 @@
 <template>
   <div class="container mx-auto px-4">
-    <TransitionRoot appear :show="!isFetchingJadwal && !isFetchingHijr" as="div">
-      <TransitionChild
-        enter="duration-500 transition-all ease-out"
-        enter-from="opacity-0"
-        enter-to="opacity-100"
-        leave="duration-300"
-        leave-from="opacity-100"
-        leave-to="opacity-0"
-      >
         <div class="flex flex-row sm:flex-col gap-4 justify-end">
           <el-date-picker
             v-model="date"
@@ -18,16 +9,8 @@
             size="large"
           />
         </div>
-      </TransitionChild>
-      <TransitionChild
-        enter="transform transition-all duration-700 ease-out delay-500"
-        enter-from="opacity-0 translate-y-8"
-        enter-to="opacity-100 translate-y-0"
-        leave="transform transition-all duration-500 ease-in"
-        leave-from="opacity-100 translate-y-0"
-        leave-to="opacity-0 translate-y-8"
-      >
-        <div class="flex flex-col items-center space-y-8 mt-8">
+      
+        <div v-if="!isFetchingJadwal && !isFetchingHijr" class="flex flex-col items-center space-y-8 mt-8">
           <div class="flex flex-col items-center space-y-3">
             <span class="capitalize text-4xl font-semibold flex items-center">
               waktu sholat daerah {{ selectedCity ? selectedCity : 'Kota Jakarta' }}
@@ -45,7 +28,7 @@
                     })
                   }}
                 </span>
-                <span class="font-medium text-lg dark:text-green-200/50"> {{ hijr.date[1] }} </span>
+                <span class="font-medium text-lg "> {{ hijr.date[1] }} </span>
               </div>
               <ChevronRight class="cursor-pointer" :size="33" @click="handleDateChange(1)" />
             </div>
@@ -53,16 +36,16 @@
           <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-6xl">
             <template v-for="(time, name) in getFilteredJadwal" :key="name">
               <div
-                class="bg-white shadow-md dark:bg-emerald-800 rounded-xl p-3 flex items-center justify-between gap-2"
+                class="bg-white shadow-md rounded-xl p-3 flex items-center justify-between gap-2"
               >
-                <div class="flex flex-col text-emerald-700 dark:text-white font-medium">
+                <div class="flex flex-col text-emerald-700 font-medium">
                   <span class="text-base capitalize">{{ name }}</span>
                   <span class="text-xl font-medium">{{ time }}</span>
                 </div>
                 <div class="w-14 h-14 flex items-center justify-center">
                   <img
                     :src="`/${name}.png`"
-                    class="w-12 h-12 object-contain filter-invert-green dark:filter-invert-white"
+                    class="w-12 h-12 object-contain filter-invert-green"
                     alt=""
                   />
                 </div>
@@ -70,37 +53,9 @@
             </template>
           </div>
         </div>
-      </TransitionChild>
-    </TransitionRoot>
 
-    <div v-if="isFetchingJadwal || isFetchingHijr" class="animate-pulse space-y-6">
-      <!-- Header Skeleton -->
-      <div class="flex flex-col items-center space-y-4">
-        <div class="h-8 w-1/2 bg-zinc-300 dark:bg-zinc-700 rounded-md animate-pulse-slower"></div>
-      </div>
-
-      <!-- Date Navigation Skeleton -->
-      <div class="flex justify-center items-center space-x-4">
-        <div class="flex flex-col items-center space-y-2">
-          <div class="h-6 w-48 bg-zinc-300 dark:bg-zinc-700 rounded-md animate-pulse-slower"></div>
-          <div class="h-4 w-32 bg-zinc-300 dark:bg-zinc-700 rounded-md animate-pulse-slower"></div>
-        </div>
-      </div>
-
-      <!-- Prayer Times Grid Skeleton -->
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-        <div
-          v-for="i in 8"
-          :key="i"
-          class="bg-zinc-300 dark:bg-zinc-700 rounded-xl p-4 flex items-center justify-between animate-pulse-slow"
-        >
-          <div class="space-y-2">
-            <div class="h-5 w-24 bg-zinc-400 dark:bg-zinc-600 rounded-md"></div>
-            <div class="h-7 w-16 bg-zinc-400 dark:bg-zinc-600 rounded-md"></div>
-          </div>
-          <div class="w-14 h-14 bg-zinc-400 dark:bg-zinc-600 rounded-full"></div>
-        </div>
-      </div>
+    <div v-else class="animate-pulse flex justify-center py-10">
+      <span class="text-3xl font-medium">Loading...</span>
     </div>
 
     <TransitionRoot appear :show="isOpen" as="template">
@@ -128,11 +83,11 @@
               leave-to="opacity-0 scale-95"
             >
               <dialog-panel
-                class="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white dark:bg-component p-10 text-left align-middle shadow-xl transition-all"
+                class="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-10 text-left align-middle shadow-xl transition-all"
               >
                 <dialog-title
                   as="h3"
-                  class="text-xl font-medium leading-5 mb-3 text-black dark:text-white pb-3"
+                  class="text-xl font-medium leading-5 mb-3 text-black pb-3"
                 >
                   Cari Kota
                 </dialog-title>

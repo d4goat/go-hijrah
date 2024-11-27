@@ -16,13 +16,13 @@ const { data } = useQuery({
       <div
         v-for="hadith in data"
         :key="hadith.id"
-        class="dark:bg-dropdown bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+        class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
       >
         <router-link :to="{ name: 'hadith.list', query: { hadith_name: hadith.id } }" class="p-6">
-          <h3 class="text-2xl font-semibold text-white mb-2">{{ hadith.name }}</h3>
-          <p class="text-gray-400 mb-4">{{ hadith.available }} Hadits telah diriwayatkan</p>
+          <h3 class="text-2xl font-semibold mb-2">{{ hadith.name }}</h3>
+          <p class="text-gray-500 mb-4">{{ hadith.available }} Hadits telah diriwayatkan</p>
           <div class="flex items-center justify-between">
-            <span class="text-gray-400 text-sm"> Hadits Riwayat </span>
+            <span class="text-gray-500 text-sm"> Hadits Riwayat </span>
             <span class="text-green-500 font-semibold text-sm">
               {{ hadith.available }}
             </span>

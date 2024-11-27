@@ -4,7 +4,6 @@ import { ref, watch, onMounted } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import { Menu, X } from 'lucide-vue-next';
 
-const isDark = ref(false)
 const isMobileMenuOpen = ref(false)
 
 const toggleMobileMenu = () => {
@@ -18,26 +17,16 @@ const navLinks = [
   { to: '/jadwal_sholat', label: 'Jadwal Sholat' }
 ]
 
-watch(isDark, (newValue) => {
-  if (newValue) {
-    document.documentElement.classList.add('dark')
-    localStorage.setItem('theme', 'dark')
-  } else {
-    document.documentElement.classList.remove('dark')
-    localStorage.setItem('theme', 'light')
-  }
-}, { immediate: true })
 
-onMounted(() => isDark.value = true)
 </script>
 
 <template>
   <div class="contents sm:p-5 font-poppins">
     <div
-      class="p-5 flex flex-row justify-between items-center dark:bg-secondary dark:text-primary bg-green-700 text-text border-b-2 border-gray-300 dark:border-border"
+      class="p-5 flex flex-row justify-between items-center bg-green-700 text-text border-b-2 border-gray-300"
     >
       <div class="flex items-center text-3xl">
-        <router-link :to="'/'" class="dark:text-emerald-500 dark:hover:text-emerald-700 text-white font-semibold">
+        <router-link :to="'/'" class="text-white font-semibold">
           Muslim Hub
         </router-link>
       </div>
@@ -50,11 +39,11 @@ onMounted(() => isDark.value = true)
           :to="link.to" 
           class="block relative group"
         >
-          <span class="text-white dark:hover:text-green-600 text-lg">{{ link.label }}</span>
-          <span class="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-white dark:bg-green-600"></span>
+          <span class="text-white text-lg">{{ link.label }}</span>
+          <span class="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-white"></span>
         </router-link>
         
-        <label
+        <!-- <label
           for="toggleThree"
           class="flex items-center cursor-pointer select-none text-dark dark:text-white"
         >
@@ -67,12 +56,12 @@ onMounted(() => isDark.value = true)
               <i :class="isDark ? 'fa-solid fa-moon text-black' : 'fa-solid fa-sun text-black'"></i>
             </div>
           </div>
-        </label>
+        </label> -->
       </div>
 
       <!-- Mobile Menu Toggle -->
       <div class="md:flex hidden space-x-3 items-center">
-        <label
+        <!-- <label
             for="toggleThreeMobile"
             class="flex items-center cursor-pointer select-none text-dark dark:text-white"
           >
@@ -85,7 +74,7 @@ onMounted(() => isDark.value = true)
                 <i :class="isDark ? 'fa-solid fa-moon text-black' : 'fa-solid fa-sun text-black'"></i>
               </div>
             </div>
-          </label>
+          </label> -->
         <button 
           @click="toggleMobileMenu" 
           class="text-white focus:outline-none focus:border-none transition-transform duration-300"
@@ -114,7 +103,7 @@ onMounted(() => isDark.value = true)
         as="div"
       >
         <div 
-          class="md:flex absolute z-50 w-full bg-green-700 dark:bg-secondary shadow-lg"
+          class="md:flex absolute z-50 w-full bg-green-700 shadow-lg"
         >
           <div class="flex flex-col p-4 space-y-4 w-full">
             <router-link 
@@ -122,7 +111,7 @@ onMounted(() => isDark.value = true)
               :key="link.to" 
               :to="link.to" 
               @click="toggleMobileMenu"
-              class="text-white dark:text-primary text-lg py-2 border-b border-green-600 dark:border-gray-700"
+              class="text-white text-lg py-2 border-b border-green-600"
             >
               {{ link.label }}
             </router-link>
@@ -131,7 +120,7 @@ onMounted(() => isDark.value = true)
       </TransitionChild>
     </TransitionRoot>
 
-    <RouterView class="min-h-screen p-5 transition-colors duration-300 bg-emerald-50/90 dark:bg-component text-text dark:text-primary" />
+    <RouterView class="min-h-screen p-5 transition-colors duration-300 bg-emerald-50/90 text-text" />
   </div>
 </template>
 
@@ -140,7 +129,4 @@ onMounted(() => isDark.value = true)
   display: contents;
 }
 
-* {
-  transition: all 0.2s ease-in-out;
-}
 </style>
