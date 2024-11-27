@@ -5,7 +5,7 @@ import 'nprogress/nprogress.css'
 NProgress.configure({ showSpinner : false })
 
 const router = createRouter({
-  history: createWebHistory('/'),
+  history: createWebHistory(),
   routes: [
     {
       path: '/',
