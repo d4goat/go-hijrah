@@ -1,0 +1,1 @@
+import{l as c,m as r,v as _}from"./index-DHYJxu8T.js";const a=(t,e)=>{const o=t.__vccOpts||t;for(const[n,s]of e)o[n]=s;return o},l={},d={class:"flex justify-center"},f=_("span",null,"Not Found",-1),i=[f];function u(t,e){return c(),r("main",d,i)}const p=a(l,[["render",u]]);export{p as default};

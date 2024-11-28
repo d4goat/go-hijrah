@@ -14,27 +14,7 @@
         "Location": "/$1"
       },
       "status": 308
-    },
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "^(?:/(.*))$",
-      "dest": "/",
-      "check": true
-    },
-    {
-      "handle": "error"
-    },
-    {
-      "status": 404,
-      "src": "^(?!/api).*$",
-      "dest": "/404.html"
     }
   ],
-  "overrides": {},
-  "framework": {
-    "version": "5.4.1"
-  },
-  "crons": []
+  "overrides": {}
 }
