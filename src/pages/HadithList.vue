@@ -21,7 +21,7 @@
         <div v-else class="flex justify-center">
             <span class="animate-pulse text-2xl font-medium">Loading...</span>
         </div>
-        <div class="flex justify-center" v-if="data.error">
+        <div class="flex justify-center" v-if="data?.error">
             <span class="text-3xl font-medium">No Data Found</span>
         </div>
     </main>
