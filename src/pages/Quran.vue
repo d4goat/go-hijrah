@@ -56,8 +56,8 @@ onMounted(() => {
   <div class="flex flex-col pt-8 pb-16">
     <div class="flex-1 space-y-6">
       <div class="flex justify-center">
-        <div class="w-1/3 lg:w-full rounded-lg">
-          <el-input v-model="searchQuery" :suffix-icon="Search" placeholder="Al-Fatihah, Al-Baqarah, etc." class="lg:h-10 h-12 shadow-md" style="--el-color-primary: #16a34a;--el-input-border-radius: 10px;"/>  
+        <div class="w-128 sm:w-84 rounded-lg">
+          <el-input v-model="searchQuery" :suffix-icon="Search" placeholder="Al-Fatihah, Al-Baqarah, etc." class="md:h-10 h-12 shadow-md" style="--el-color-primary: #16a34a;--el-input-border-radius: 10px;"/>  
         </div>
       </div> 
       <div v-if="filtered.length > 0">
@@ -89,6 +89,9 @@ onMounted(() => {
             </router-link>
           </div>
         </div>
+      </div>
+      <div v-else class="flex justify-center">
+        <span class="text-2xl font-medium">No Data Found</span>
       </div>
     </div>
   </div>
