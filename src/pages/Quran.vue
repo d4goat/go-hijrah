@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import axios from '@/libs/axios'
+import { Search } from 'lucide-vue-next';
 
 interface Surah {
   arti: string
@@ -13,11 +14,20 @@ interface Surah {
   tempatTurun: string
 }
 
+const searchQuery = ref<string>("")
+const isLoading = ref(false)
 const surah = ref<Surah[]>([])
 
 const getSurahList = async () => {
   try {
-    const response = await axios.get('https://equran.id/api/v2/surat')
+    isLoading.value = true
+    const response = await axios.get('https://equran.id/api/v2/surat').then((res: any) => {
+      isLoading.value = false
+      return res
+    }).catch((err) => {
+      console.error(err.response.data.message)
+      isLoading.value = false
+    })
     // Type assertion to ensure response.data.data matches Surah[]
     surah.value = response.data.data as Surah[]
   } catch (error) {
@@ -25,17 +35,34 @@ const getSurahList = async () => {
   }
 }
 
+const filtered = computed(() => {
+  if(searchQuery.value == '') return surah.value
+  
+  const query = searchQuery.value.toLowerCase()
+
+  return surah.value.filter((item: Surah) => {
+    return (
+      item.namaLatin.toLowerCase().includes(query) || item.tempatTurun.toLowerCase().includes(query)
+    )
+  })
+})
+
 onMounted(() => {
   getSurahList()
 })
 </script>
 
 <template>
-  <div class="flex flex-col py-20">
-    <div class="flex-1">
-      <div v-if="surah.length > 0">
+  <div class="flex flex-col pt-8 pb-16">
+    <div class="flex-1 space-y-6">
+      <div class="flex justify-center">
+        <div class="w-1/3 lg:w-full rounded-lg">
+          <el-input v-model="searchQuery" :suffix-icon="Search" placeholder="Al-Fatihah, Al-Baqarah, etc." class="lg:h-10 h-12 shadow-md" style="--el-color-primary: #16a34a;--el-input-border-radius: 10px;"/>  
+        </div>
+      </div> 
+      <div v-if="filtered.length > 0">
         <div class="flex flex-wrap justify-center gap-7">
-          <div v-for="item in surah" :key="item.nomor">
+          <div v-for="item in filtered" :key="item.nomor">
             <router-link
               :to="{ name: 'quran.surah', query: { surah: item.namaLatin, surah_ke: item.nomor } }"
             >
@@ -66,3 +93,9 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.el-input--suffix {
+  border-radius: 10px !important;
+}
+</style>

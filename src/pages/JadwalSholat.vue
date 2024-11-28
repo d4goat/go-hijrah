@@ -1,7 +1,8 @@
 <template>
-  <div class="container mx-auto px-4">
+  <div class="container mx-auto lg:px-4 px-10">
         <div class="flex flex-row sm:flex-col gap-4 justify-end">
           <el-date-picker
+            style="--el-color-primary: #16a34a;"
             v-model="date"
             @change="refetch"
             type="date"
@@ -33,7 +34,7 @@
               <ChevronRight class="cursor-pointer" @click="handleDateChange(1)" />
             </div>
           </div>
-          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-6xl">
+          <div class="grid grid-cols-2 lg:grid-cols-2 gap-4 w-full max-w-6xl">
             <template v-for="(time, name) in getFilteredJadwal" :key="name">
               <div
                 class="bg-white shadow-md rounded-xl p-3 flex items-center justify-between gap-2"
@@ -92,6 +93,7 @@
                   Cari Kota
                 </dialog-title>
                 <el-select-v2
+                  style="--el-color-primary: #16a34a;"
                   v-model="kota"
                   class="w-full capitalize"
                   filterable

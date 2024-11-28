@@ -1,6 +1,6 @@
 <template>
     <div class="bg-gradient-to-b from-green-100 via-[#CBEDD5] to-green-600/30">
-      <div class="container flex flex-col items-center pt-28 px-4">
+      <div class="container flex flex-col items-center pt-24 px-4">
         <TransitionRoot appear :show="isVisible" as="template">
           <div class="w-[60%] sm:w-full text-center space-y-6">
             <!-- Hero Title -->
@@ -14,7 +14,7 @@
               leave-to="opacity-0 translate-y-4"
             >
               <div class="relative">
-                <div class="text-5xl lg:text-2xl font-medium leading-tight tracking-wide capitalize mb-3 text-gray-800">
+                <div class="text-5xl lg:text-2xl font-medium lg:font-semibold leading-tight tracking-wide capitalize mb-3 text-gray-800">
                   Genggam Cahaya Islam di Ujung Jari dengan 
                     <span class="relative z-10 font-semibold text-emerald-600 hover:text-emerald-700 transition-colors duration-300">
                       Muslim Hub
