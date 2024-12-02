@@ -33,6 +33,7 @@ export default {
         '1200': '1200ms'
       },
       width: {
+        '120' : '25rem',
         '128' : '28rem',
         '84' : '23rem'
       },

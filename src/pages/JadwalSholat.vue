@@ -4,7 +4,7 @@
           <el-date-picker
             style="--el-color-primary: #16a34a;"
             v-model="date"
-            @change="refetch"
+            @change="refetched"
             type="date"
             placeholder="Pilih Tanggal"
             size="large"
@@ -174,6 +174,11 @@ const cities = computed(() =>
   }))
 )
 
+const refetched = () => {
+  refetch()
+  refetchHijr()
+}
+
 const {
   data: jadwal,
   isFetching: isFetchingJadwal,
@@ -201,8 +206,8 @@ const {
   queryFn: async () => {
     const selectedDate = date.value ? new Date(date.value) : new Date()
     const year = selectedDate.getFullYear()
-    const month = selectedDate.getMonth() + 1
-    const day = selectedDate.getDate()
+    const month = String(selectedDate.getMonth() + 1).padStart(2, '0')
+    const day = String(selectedDate.getDate()).padStart(2, '0')
 
     return await axios
       .get(`https://api.myquran.com/v2/cal/hijr/${year}-${month}-${day}`)

@@ -53,7 +53,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col pt-8 pb-16">
+  <div class="flex flex-col pb-16">
     <div class="flex-1 space-y-6">
       <div class="flex justify-center">
         <div class="w-128 sm:w-84 rounded-lg">
@@ -67,7 +67,7 @@ onMounted(() => {
               :to="{ name: 'quran.surah', query: { surah: item.namaLatin, surah_ke: item.nomor } }"
             >
               <div
-                class="w-128 sm:w-84 p-4 rounded-md bg-white shadow-md flex flex-wrap gap-3 items-center justify-between"
+                class="w-120 sm:w-84 p-4 rounded-md bg-white shadow-md flex flex-wrap gap-3 items-center justify-between"
               >
               <div class="flex gap-5 items-center">
                   <div>
@@ -75,7 +75,7 @@ onMounted(() => {
                   </div>
                   <div class="flex flex-col">
                     <div class="flex gap-2 items-center">
-                      <span class="font-semibold text-md md:text-sm">
+                      <span class="font-semibold text-sm">
                         {{ item.namaLatin }}
                       </span>
                       <span class="md:text-xs"> ( {{ item.arti }} ) </span>

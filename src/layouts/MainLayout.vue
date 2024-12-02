@@ -48,7 +48,7 @@ const navLinks = [
           </router-link>
         </div>
 
-        <div class="lg:flex hidden items-center">
+        <div class="md:flex hidden items-center">
           <PopoverButton
             class="text-white focus:outline-none focus:border-none transition-transform duration-300"
             @click="toggleMobileMenu" 
@@ -69,7 +69,7 @@ const navLinks = [
       >
         <PopoverPanel 
           v-if="open" 
-          class="lg:flex hidden absolute z-50 w-full bg-green-800 shadow-lg"
+          class="md:flex hidden absolute z-50 w-full bg-green-800 shadow-lg"
         >
           <div class="flex flex-col p-4 w-full space-y-2">
             <router-link 
