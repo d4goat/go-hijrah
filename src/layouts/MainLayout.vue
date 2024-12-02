@@ -27,10 +27,10 @@ const navLinks = [
 
 <template>
   <div class="contents sm:p-5">
-    <Popover v-slot="{ open, close }" class="relative">
+    <Popover v-slot="{ open, close }" class="fixed top-0 start-0 w-full z-50">
       <div class="p-5 flex flex-row justify-between items-center bg-green-800 text-white border-b-2 border-gray-300">
-        <div class="flex items-center text-3xl">
-          <router-link :to="'/'" class="font-semibold hover:text-green-300 transition duration-300">
+        <div class="flex items-center text-3xl md:text-2xl">
+          <router-link :to="'/'" class="font-semibold transition duration-300">
             Muslim Hub
           </router-link>
         </div>
@@ -86,6 +86,6 @@ const navLinks = [
       </transition>
     </Popover>
 
-    <RouterView class="min-h-screen p-5 transition-colors duration-300 bg-emerald-50/90 text-text" />
+    <RouterView class="min-h-screen px-5 pb-5 pt-24 transition-colors duration-300 bg-emerald-50/90 text-text" />
   </div>
 </template>

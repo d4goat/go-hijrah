@@ -29,6 +29,9 @@ export default {
         'md': {'max': '767px'},
         'sm': {'max': '639px'},
       },
+      transitionDelay: {
+        '1200': '1200ms'
+      },
       width: {
         '128' : '28rem',
         '84' : '23rem'
