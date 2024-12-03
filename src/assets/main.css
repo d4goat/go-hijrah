@@ -123,4 +123,7 @@
   .filter-invert-green {
     filter: invert(50%) sepia(100%) saturate(400%) hue-rotate(80deg) brightness(100%) contrast(100%);
   }
+  .filter-cream-yellow {
+    filter: invert(90%) sepia(60%) saturate(200%) hue-rotate(35deg) brightness(95%) contrast(90%);
+  }  
 }

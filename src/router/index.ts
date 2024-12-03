@@ -46,6 +46,16 @@ const router = createRouter({
           name: 'hadith.list',
           component: () => import("@/pages/HadithList.vue")
         },
+        {
+          path: '/doa_harian',
+          name: 'doa_harian',
+          component: () => import("@/pages/Doa_Harian.vue")
+        },
+        {
+          path: '/shalawat_nabi',
+          name: 'shalawat_nabi',
+          component: () => import("@/pages/Shalawat_Nabi.vue")
+        },
       ]
     },
     {
