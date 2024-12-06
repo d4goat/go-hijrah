@@ -6,6 +6,7 @@
             v-model="date"
             @change="refetched"
             type="date"
+            :clearable="false"
             placeholder="Pilih Tanggal"
             size="large"
           />

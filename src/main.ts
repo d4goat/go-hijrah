@@ -31,11 +31,11 @@ const MyPreset = definePreset(Aura, {
   },
   components: {
     accordion: {
-        panel: {
-            border: {
-                color: "#fff"
-            }
-        },
+      panel: {
+        border: {
+          color: '#fff'
+        }
+      },
       header: {
         padding: 0,
         background: '#fff',

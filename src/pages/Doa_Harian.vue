@@ -5,7 +5,7 @@
                 <span class="text-green-600 text-xl font-medium">{{ card.judul }}</span>
                 <span class="text-2xl text-green-700 text-right">{{ card.arab }}</span>
                 <span class="text-green-700 italic">{{ card.latin }}</span>
-                <Accordion value="0">
+                <Accordion value="0" expand-icon="fa-solid fa-chevron-down" collapse-icon="fa-solid fa-chevron-up">
                     <AccordionPanel :value="card.id">
                         <AccordionHeader>
                             <span class="text-lg font-medium text-green-700/75">Arti: </span>
@@ -28,7 +28,7 @@ import Accordion from 'primevue/accordion';
 import AccordionPanel from 'primevue/accordionpanel';
 import AccordionHeader from 'primevue/accordionheader';
 import AccordionContent from 'primevue/accordioncontent';
-import { ChevronDown } from 'lucide-vue-next';
+import { ChevronDown, ChevronUp } from 'lucide-vue-next';
 
 const { data } = useQuery({
   queryKey: ['doa', 'harian'],

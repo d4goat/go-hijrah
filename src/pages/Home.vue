@@ -108,7 +108,7 @@ const cards = [
   {
     name: 'Jadwal Sholat',
     img: 'shalat.png',
-    link: '/quran'
+    link: '/jadwal_sholat'
   },
   {
     name: 'Asmaul Husna',
