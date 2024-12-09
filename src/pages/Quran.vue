@@ -93,6 +93,9 @@ onMounted(() => {
       <div v-else class="flex justify-center">
         <span class="text-2xl font-medium">No Data Found</span>
       </div>
+      <div v-if="isLoading" class="flex justify-center">
+        <span class="animate-pulse text-2xl font-medium">Loading...</span>
+      </div>
     </div>
   </div>
 </template>

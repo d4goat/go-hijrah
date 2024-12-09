@@ -14,7 +14,7 @@
                   class="text-5xl lg:text-2xl font-medium lg:font-semibold leading-tight tracking-wide capitalize mb-3 text-gray-800">
                   Genggam Cahaya Islam di Ujung Jari dengan
                   <span
-                    class="relative z-10 font-semibold text-emerald-600 hover:text-emerald-700 transition-colors duration-300">
+                  class="relative z-10 font-semibold text-emerald-600 hover:text-emerald-700 transition-colors duration-300">
                     Muslim Hub
                   </span>
                 </div>
@@ -56,13 +56,13 @@
             enter-from="opacity-0 translate-y-4" enter-to="opacity-100 translate-y-0"
             leave="transform duration-300 transition ease-in-out" leave-from="opacity-100 translate-y-0"
             leave-to="opacity-0 translate-y-4">
-            <div class="bg-white rounded-lg shadow-lg flex flex-col mt-6 p-5">
+            <div class="bg-white rounded-lg shadow-lg flex flex-col mt-6 p-5 mx-auto md:w-full w-[750px]">
               <span class="text-green-600 font-medium text-left">Random Ayat Untukmu</span>
               <div class="text-2xl my-3 text-green-700 text-right">{{ data?.arab }}</div>
-              <span class="text-xs text-green-700 text-left">{{ data?.translation }}</span>
+              <span class="text-sm text-green-700 text-left ">{{ data?.translation }}</span>
             </div>
           </TransitionChild>
-
+          
           <TransitionChild as="template" enter="transform transition duration-1000 delay-1000"
             enter-from="opacity-0 translate-y-4" enter-to="opacity-100 translate-y-0"
             leave="transform duration-300 transition ease-in-out" leave-from="opacity-100 translate-y-0"
@@ -78,9 +78,9 @@
             <section id="menu" class="grid grid-cols-4 md:grid-cols-2 gap-4 mt-6">
               <template v-for="card in cards" :key="card.name">
                 <router-link :to="card.link"
-                  class="p-9 flex flex-col gap-3 items-center justify-center rounded-md bg-green-500">
-                  <img :src="card.img" class="w-16 h-16 object-contain" alt="">
-                  <span class="font-medium text-xl">{{ card.name }}</span>
+                  class="p-9 md:p-7 flex flex-col gap-3 items-center justify-center rounded-md bg-green-500">
+                  <img :src="card.img" class="w-16 h-16 md:w-12 md:h-12 object-contain" alt="">
+                  <span class="font-medium text-xl md:text-sm">{{ card.name }}</span>
                 </router-link>
               </template>
             </section>
@@ -131,16 +131,18 @@ const cards = [
     link: '/shalawat_nabi'
   },
   {
-    name: 'Quran',
-    img: 'quran.png',
-    link: '/quran'
+    name: 'Bacaan Tahlil',
+    img: 'tasbih.png',
+    link: '/tahlil'
   },
   {
-    name: 'Quran',
-    img: 'quran.png',
-    link: '/quran'
+    name: 'Kisah Nabi & Rasul',
+    img: 'muslim.png',
+    link: '/kisah_nabi'
   },
 ]
+
+// ۞
 
 const { data, isLoading, refetch } = useQuery({
   queryKey: ['quran', 'random'],
@@ -150,5 +152,6 @@ const { data, isLoading, refetch } = useQuery({
 
 onMounted(() => {
   isVisible.value = true
+  window.scrollTo(0, 0)
 })
 </script>

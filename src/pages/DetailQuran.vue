@@ -39,6 +39,7 @@ async function getSurah(nomor: any) {
 
 onMounted(() => {
   getSurah(route.query.surah_ke)
+  window.scrollTo(0, 0)
 })
 </script>
 

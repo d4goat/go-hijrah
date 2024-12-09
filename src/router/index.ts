@@ -56,6 +56,21 @@ const router = createRouter({
           name: 'shalawat_nabi',
           component: () => import("@/pages/Shalawat_Nabi.vue")
         },
+        {
+          path: '/tahlil',
+          name: 'tahlil',
+          component: () => import('@/pages/Tahlil.vue')
+        },
+        {
+          path: '/kisah_nabi',
+          name: 'kisah_nabi',
+          component: () => import('@/pages/Kisah_Nabi.vue')
+        },
+        {
+          path: '/kisah_nabi/detail',
+          name: 'kisah_nabi_detail',
+          component: () => import('@/pages/DetailKisahNabi.vue')
+        },
       ]
     },
     {
