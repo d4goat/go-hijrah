@@ -1,7 +1,8 @@
 <template>
     <main class="flex justify-center">
-        <div class="grid grid-cols-1 w-[70%] gap-4">
-            <div v-for="card in sholawat" :key="card.id" class="bg-white rounded-lg shadow-lg space-y-4 flex flex-col mt-6 p-5">
+        <div v-if="!isLoading" class="grid grid-cols-1 w-[70%] gap-4">
+            <div v-for="card in sholawat" :key="card.id"
+                class="bg-white rounded-lg shadow-lg space-y-4 flex flex-col mt-6 p-5">
                 <span class="text-green-600 text-xl font-medium">{{ card.name }}</span>
                 <span class="text-2xl text-green-700 text-right">{{ card.arab }}</span>
                 <span class="text-green-700 italic">{{ card.latin }}</span>
@@ -12,10 +13,13 @@
                         </AccordionHeader>
                         <AccordionContent>
                             <span class="text-green-700/75">{{ card.arti }}</span>
-                    </AccordionContent>
-                </AccordionPanel>
-            </Accordion>
+                        </AccordionContent>
+                    </AccordionPanel>
+                </Accordion>
+            </div>
         </div>
+        <div v-else class="flex justify-center">
+            <span class="text-2xl font-medium animate-pulse">Loading...</span>
         </div>
     </main>
 </template>
@@ -30,4 +34,13 @@ import AccordionContent from 'primevue/accordioncontent';
 import { ChevronDown, ChevronUp } from 'lucide-vue-next';
 
 const sholawat = Sholawat.Sholawat
+
+const isLoading = ref(true)
+
+onMounted(() => {
+    setTimeout(() => {
+        isLoading.value = false
+    }, 1500)
+
+})
 </script>

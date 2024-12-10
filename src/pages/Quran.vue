@@ -49,6 +49,7 @@ const filtered = computed(() => {
 
 onMounted(() => {
   getSurahList()
+  window.scrollTo(0, 0)
 })
 </script>
 
@@ -90,7 +91,7 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <div v-else class="flex justify-center">
+      <div v-else-if="!isLoading && filtered.length == 0" class="flex justify-center">
         <span class="text-2xl font-medium">No Data Found</span>
       </div>
       <div v-if="isLoading" class="flex justify-center">
