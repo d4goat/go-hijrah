@@ -3,7 +3,7 @@ import axios from '@/libs/axios'
 import { useQuery } from '@tanstack/vue-query'
 import { ref, onMounted } from 'vue'
 
-const { data } = useQuery({
+const { data, isLoading } = useQuery({
   queryKey: ['hadith'],
   queryFn: async () =>
     await axios.get('https://api.hadith.gading.dev/books').then((res: any) => res.data.data)
@@ -12,7 +12,7 @@ const { data } = useQuery({
 
 <template>
   <main class="flex justify-center items-center">
-    <div class="grid grid-cols-1 gap-8 w-full max-w-6xl">
+    <div v-if="!isLoading" class="grid grid-cols-1 gap-8 w-full max-w-6xl">
       <div
         v-for="hadith in data"
         :key="hadith.id"
@@ -30,5 +30,6 @@ const { data } = useQuery({
         </router-link>
       </div>
     </div>
+    <div v-else class="flex justify-center"><span class="text-2xl font-medium">Loading...</span></div>
   </main>
 </template>

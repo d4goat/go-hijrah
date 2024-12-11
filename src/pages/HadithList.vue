@@ -59,5 +59,7 @@ const handleRangeChange = (set: string) => {
     refetch()
 }
 
-
+onMounted(() => {
+    window.scrollTo(0,0)
+})
 </script>

@@ -5,7 +5,7 @@ import { useRoute } from 'vue-router'
 import { ArrowLeft, Search } from 'lucide-vue-next'
 
 const route = useRoute()
-const searchQuery = ref<string>("")
+const searchQuery = ref<string>('')
 const isLoading = ref(false)
 
 interface Ayat {
@@ -55,35 +55,59 @@ watch(searchQuery, (newQuery) => {
   }
 })
 
+const showSearchModal = ref(false)
+const dialogWidth = ref("80%")
+
 onMounted(() => {
   getSurah(route.query.surah_ke)
   window.scrollTo(0, 0)
+
+  const updateDialogWidth = () => {
+    const screenWidth = window.innerWidth
+    dialogWidth.value = screenWidth > 767 ? "60%" : "80%"
+  }
+  updateDialogWidth()
+  window.addEventListener('resize', updateDialogWidth)
 })
 </script>
 
 <template>
   <div class="flex-col">
-    <div class="w-56 rounded-lg">
-      <el-input v-model="searchQuery" :suffix-icon="Search" placeholder="Cari Ayat" class="shadow-md h-10"
-        style="--el-color-primary: #16a34a;--el-input-border-radius: 10px;" />
+    <div>
+      <button
+        class="fixed bottom-4 right-4 bg-green-500 text-white p-3 rounded-full shadow-lg"
+        @click="showSearchModal = true"
+      >
+        <Search />
+      </button>
+      <el-dialog v-model="showSearchModal" :width="dialogWidth" title="Cari Ayat">
+        <el-input v-model="searchQuery" :suffix-icon="Search" placeholder="Cari Ayat" />
+      </el-dialog>
     </div>
     <section v-if="!isLoading">
-      <div v-if="surah.nomor != 1"
-        class="py-8 bg-white rounded-lg flex flex-col items-center gap-5 text-gray-700 mt-4 shadow-md">
+      <div
+        v-if="surah.nomor != 1"
+        class="py-8 bg-white rounded-lg flex flex-col items-center gap-5 text-gray-700 mt-4 shadow-md"
+      >
         <span class="text-4xl">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</span>
         <span class="font-medium">bismillāhir-raḥmānir-raḥīm(i)</span>
       </div>
       <div v-for="ayat in surah.ayat" :key="ayat.nomorAyat">
         <div class="">
-          <div :id="ayat.nomorAyat.toString()" class="flex flex-col gap-3 md:gap-4 px-3 py-5 my-5 rounded-md bg-white shadow-md">
+          <div
+            :id="ayat.nomorAyat.toString()"
+            class="flex flex-col gap-3 md:gap-4 px-3 py-5 my-5 rounded-md bg-white shadow-md"
+          >
             <div class="flex flex-col gap-5 px-2">
-              <div class="rounded-full flex justify-center items-center border border-black w-9 h-9 md:w-7 md:h-7 md:text-xs">
+              <div
+                class="rounded-full flex justify-center items-center border border-black w-9 h-9 md:w-7 md:h-7 md:text-xs"
+              >
                 {{ ayat.nomorAyat }}
               </div>
               <span class="text-3xl md:text-2xl text-right">
                 {{ ayat.teksArab }}
               </span>
-            </div>x
+            </div>
             <div class="flex flex-col gap-2">
               <span class="md:text-sm"> {{ ayat.teksLatin }} </span>
               <!-- <span> {{ ayat.nomorAyat }}. {{ ayat.teksIndonesia }} </span> -->

@@ -1,1 +1,0 @@
-import{_ as e}from"./_plugin-vue_export-helper-DlAUqK2U.js";import{l as o,m as t,v as s}from"./index-CAlQbQsq.js";const n={},c={class:"flex justify-center"},r=s("span",null,"Not Found",-1),_=[r];function a(d,f){return o(),t("main",c,_)}const m=e(n,[["render",a]]);export{m as default};
