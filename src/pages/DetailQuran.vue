@@ -46,17 +46,18 @@ function scrollToAyat(ayatNumber: string) {
   const ayatElement = document.getElementById(ayatNumber)
   if (ayatElement) {
     ayatElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    showSearchModal.value = false
   }
 }
 
-watch(searchQuery, (newQuery) => {
-  if (!isNaN(Number(newQuery))) {
-    scrollToAyat(newQuery)
-  }
-})
+// watch(searchQuery, (newQuery) => {
+//   if (!isNaN(Number(newQuery))) {
+//     scrollToAyat(newQuery)
+//   }
+// })
 
 const showSearchModal = ref(false)
-const dialogWidth = ref("80%")
+const dialogWidth = ref('80%')
 
 onMounted(() => {
   getSurah(route.query.surah_ke)
@@ -64,7 +65,7 @@ onMounted(() => {
 
   const updateDialogWidth = () => {
     const screenWidth = window.innerWidth
-    dialogWidth.value = screenWidth > 767 ? "60%" : "80%"
+    dialogWidth.value = screenWidth > 767 ? '60%' : '80%'
   }
   updateDialogWidth()
   window.addEventListener('resize', updateDialogWidth)
@@ -81,7 +82,15 @@ onMounted(() => {
         <Search />
       </button>
       <el-dialog v-model="showSearchModal" :width="dialogWidth" title="Cari Ayat">
-        <el-input v-model="searchQuery" :suffix-icon="Search" placeholder="Cari Ayat" />
+        <el-input
+          @keyup.enter="scrollToAyat(searchQuery)"
+          v-model="searchQuery"
+          placeholder="Cari Ayat"
+        >
+          <template #suffix>
+            <el-icon @click="scrollToAyat(searchQuery)" class="el-input__icon"><Search /></el-icon>
+          </template>
+        </el-input>
       </el-dialog>
     </div>
     <section v-if="!isLoading">
