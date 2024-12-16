@@ -1,60 +1,72 @@
 <template>
   <div class="container mx-auto lg:px-4 px-10">
-        <div class="flex flex-row sm:flex-col gap-4 justify-end">
-          <el-date-picker
-            style="--el-color-primary: #16a34a;"
-            v-model="date"
-            @change="refetched"
-            type="date"
-            :clearable="false"
-            placeholder="Pilih Tanggal"
-            size="large"
-          />
-        </div>
-      
-        <div v-if="!isFetchingJadwal && !isFetchingHijr" class="flex flex-col items-center space-y-8 mt-8">
-          <div class="flex flex-col items-center space-y-3">
-            <span class="capitalize text-4xl md:text-lg font-semibold flex items-center">
-              waktu sholat daerah {{ selectedCity ? selectedCity : 'Kota Jakarta' }}
-              <chevron-down :size="20" class="ml-2 cursor-pointer" @click="isOpen = true" />
+    <div class="flex flex-row sm:flex-col gap-4 justify-end">
+      <el-date-picker
+        style="--el-color-primary: #16a34a"
+        v-model="date"
+        @change="refetched"
+        type="date"
+        :clearable="false"
+        placeholder="Pilih Tanggal"
+        size="large"
+      />
+    </div>
+
+    <div
+      v-if="!isFetchingJadwal && !isFetchingHijr"
+      class="flex flex-col items-center space-y-8 mt-8"
+    >
+      <div class="flex flex-col items-center space-y-3">
+        <span class="capitalize text-4xl md:text-lg font-semibold flex items-center">
+          waktu sholat daerah {{ selectedCity ? selectedCity : 'Kota Jakarta' }}
+          <chevron-down :size="20" class="ml-2 cursor-pointer" @click="isOpen = true" />
+        </span>
+        <div class="flex items-center gap-5">
+          <ChevronLeft class="cursor-pointer" @click="handleDateChange(-1)" />
+          <div class="flex flex-col items-center">
+            <span class="font-medium md:text-sm text-2xl">
+              {{ date.toLocaleDateString('id-ID', { weekday: 'long' }) }},
+              {{ date.toLocaleDateString('id-ID', { day: '2-digit' }) }}
+              {{
+                date.toLocaleDateString('id-ID', {
+                  month: 'long'
+                })
+              }}
             </span>
-            <div class="flex items-center gap-5">
-              <ChevronLeft class="cursor-pointer" @click="handleDateChange(-1)" />
-              <div class="flex flex-col items-center">
-                <span class="font-medium md:text-sm text-2xl">
-                  {{ date.toLocaleDateString('id-ID', { weekday: 'long' }) }},
-                  {{ date.toLocaleDateString('id-ID', { day: '2-digit' }) }}
-                  {{
-                    date.toLocaleDateString('id-ID', {
-                      month: 'long'
-                    })
-                  }}
-                </span>
-                <span class="font-medium text-lg md:text-xs"> {{ hijr.date[1] }} </span>
-              </div>
-              <ChevronRight class="cursor-pointer" @click="handleDateChange(1)" />
+            <span class="font-medium text-lg md:text-xs"> {{ hijr.date[1] }} </span>
+          </div>
+          <ChevronRight class="cursor-pointer" @click="handleDateChange(1)" />
+        </div>
+      </div>
+      <div
+        class="flex flex-col gap-2 bg-white shadow-md md:w-full w-1/3 py-3 items-center text-emerald-700 rounded-xl"
+      >
+        <div class="flex items-center gap-3">
+          <Clock />
+          <span class="capitalize font-medium text-lg"
+            >menuju waktu sholat {{ nextTime.name }}</span
+          >
+        </div>
+        <span class="font-semibold text-xl"> {{ countdown }} </span>
+      </div>
+      <div class="grid grid-cols-2 lg:grid-cols-2 gap-4 w-full max-w-6xl">
+        <template v-for="(time, name) in getFilteredJadwal" :key="name">
+          <div class="bg-white shadow-md rounded-xl p-3 flex items-center justify-between gap-2">
+            <div class="flex flex-col text-emerald-700 font-medium">
+              <span class="text-base capitalize">{{ name }}</span>
+              <span class="text-xl font-medium">{{ time }}</span>
+            </div>
+            <div class="w-14 h-14 flex items-center justify-center">
+              <img
+                :src="`/${name}.png`"
+                class="w-12 h-12 object-contain filter-invert-green"
+                alt=""
+              />
             </div>
           </div>
-          <div class="grid grid-cols-2 lg:grid-cols-2 gap-4 w-full max-w-6xl">
-            <template v-for="(time, name) in getFilteredJadwal" :key="name">
-              <div
-                class="bg-white shadow-md rounded-xl p-3 flex items-center justify-between gap-2"
-              >
-                <div class="flex flex-col text-emerald-700 font-medium">
-                  <span class="text-base capitalize">{{ name }}</span>
-                  <span class="text-xl font-medium">{{ time }}</span>
-                </div>
-                <div class="w-14 h-14 flex items-center justify-center">
-                  <img
-                    :src="`/${name}.png`"
-                    class="w-12 h-12 object-contain filter-invert-green"
-                    alt=""
-                  />
-                </div>
-              </div>
-            </template>
-          </div>
-        </div>
+        </template>
+      </div>
+    </div>
 
     <div v-else class="animate-pulse flex justify-center py-10">
       <span class="text-3xl md:text-lg font-medium">Loading...</span>
@@ -87,14 +99,11 @@
               <dialog-panel
                 class="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-10 text-left align-middle shadow-xl transition-all"
               >
-                <dialog-title
-                  as="h3"
-                  class="text-xl font-medium leading-5 mb-3 text-black pb-3"
-                >
+                <dialog-title as="h3" class="text-xl font-medium leading-5 mb-3 text-black pb-3">
                   Cari Kota
                 </dialog-title>
                 <el-select-v2
-                  style="--el-color-primary: #16a34a;"
+                  style="--el-color-primary: #16a34a"
                   v-model="kota"
                   class="w-full capitalize"
                   filterable
@@ -135,7 +144,7 @@ import { ref, onMounted, computed, watch } from 'vue'
 import axios from '@/libs/axios'
 import { useQuery } from '@tanstack/vue-query'
 import { ElMessage } from 'element-plus'
-import { ChevronDown, ChevronRight, ChevronLeft } from 'lucide-vue-next'
+import { ChevronDown, ChevronRight, ChevronLeft, Clock } from 'lucide-vue-next'
 import { Dialog, DialogPanel, DialogTitle, TransitionRoot, TransitionChild } from '@headlessui/vue'
 
 interface ListItem {
@@ -159,6 +168,8 @@ const isOpen = ref(false)
 const date = ref(new Date())
 const selectedCity = ref<string>('')
 const kota = ref<string>('')
+const countdown = ref<string>('')
+const nextTime = ref<any>([])
 
 const { data: city, isFetching: isFetchingCity } = useQuery({
   queryKey: ['jadwal', 'kota'],
@@ -269,6 +280,46 @@ const handleDateChange = (days: number) => {
   refetch()
   refetchHijr()
 }
+
+const calculateCountdown = () => {
+  if (!jadwal.value || !jadwal.value.jadwal) return
+
+  const now: any = new Date()
+  const times = [
+    { name: 'subuh', time: jadwal.value.jadwal.subuh },
+    { name: 'dzuhur', time: jadwal.value.jadwal.dzuhur },
+    { name: 'ashar', time: jadwal.value.jadwal.ashar },
+    { name: 'maghrib', time: jadwal.value.jadwal.maghrib },
+    { name: 'isya', time: jadwal.value.jadwal.isya }
+  ]
+
+  const upcomingTimes = times
+    .map(({ name, time }) => {
+      const [hour, minute] = time.split(':').map(Number)
+      const sholatTime = new Date(now)
+      sholatTime.setHours(hour, minute, 0, 0)
+      if (sholatTime < now) sholatTime.setDate(sholatTime.getDate() + 1) // Jika sudah lewat, gunakan besok
+      return { name, time: sholatTime }
+    })
+    .sort((a, b) => a.time.getTime() - b.time.getTime()) // Urutkan berdasarkan waktu terdekat
+
+  nextTime.value = upcomingTimes[0] // Waktu terdekat
+  const diff = nextTime.value.time - now // Selisih waktu dalam ms
+
+  // Konversi ke format jam, menit, dan detik
+  const hours = Math.floor(diff / (1000 * 60 * 60))
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000)
+
+  countdown.value = `${String(hours).padStart(2, '0')} : ${String(minutes).padStart(2, '0')} : ${String(seconds).padStart(2, '0')}`
+}
+
+let interval: any
+watch(jadwal, () => {
+  if (interval) clearInterval(interval)
+  calculateCountdown()
+  interval = setInterval(calculateCountdown, 1000)
+})
 
 // Computed property untuk memfilter jadwal
 const getFilteredJadwal = computed(() => {
