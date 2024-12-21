@@ -13,13 +13,13 @@
     </div>
 
     <div
-      v-if="!isFetchingJadwal && !isFetchingHijr"
+      v-if="!isFetchingJadwal && !isFetchingHijr && loc?.city"
       class="flex flex-col items-center space-y-8 mt-8"
     >
       <div class="flex flex-col items-center space-y-3">
         <span class="capitalize text-4xl md:text-lg font-semibold flex items-center">
-          waktu sholat daerah {{ selectedCity ? selectedCity : 'Kota Jakarta' }}
-          <chevron-down :size="20" class="ml-2 cursor-pointer" @click="isOpen = true" />
+          waktu sholat daerah {{ loc?.city }}
+          <!-- <chevron-down :size="20" class="ml-2 cursor-pointer" @click="isOpen = true" /> -->
         </span>
         <div class="flex items-center gap-5">
           <ChevronLeft class="cursor-pointer" @click="handleDateChange(-1)" />
@@ -33,7 +33,7 @@
                 })
               }}
             </span>
-            <span class="font-medium text-lg md:text-xs"> {{ hijr.date[1] }} </span>
+            <span class="font-medium text-lg md:text-xs"> {{ hijr?.date[1] }} </span>
           </div>
           <ChevronRight class="cursor-pointer" @click="handleDateChange(1)" />
         </div>
@@ -72,7 +72,13 @@
       <span class="text-3xl md:text-lg font-medium">Loading...</span>
     </div>
 
-    <TransitionRoot appear :show="isOpen" as="template">
+    <div v-if="!loc" class="flex justify-center py-10">
+      <div class="bg-red-300 border border-red-500 rounded-lg container max-w-2xl">
+        <span class="text-red-400">Mohon Izinkan Akses Lokasi</span>
+      </div>
+    </div>
+
+    <!-- <TransitionRoot appear :show="isOpen" as="template">
       <Dialog as="div" @close="isOpen = false" class="relative z-10">
         <transition-child
           as="template"
@@ -135,7 +141,7 @@
           </div>
         </div>
       </Dialog>
-    </TransitionRoot>
+    </TransitionRoot> -->
   </div>
 </template>
 
@@ -160,54 +166,113 @@ interface City {
 interface JadwalSholat {
   date?: string
   tanggal?: string
-  [key: string]: string | undefined
+  subuh: string
+  dzuhur: string
+  ashar: string
+  maghrib: string
+  isya: string
+}
+
+interface Jadwal {
+  daerah: string
+  id: number
+  jadwal: JadwalSholat
+  lokasi: string
 }
 
 const isOpen = ref(false)
 
 const date = ref(new Date())
-const selectedCity = ref<string>('')
-const kota = ref<string>('')
+const jadwal = ref<Jadwal>()
+const isFetchingJadwal = ref(false)
+// const selectedCity = ref<string>('')
+const loc = ref({ city: '', cityId: 0 })
+const kota = ref<City[]>([])
 const countdown = ref<string>('')
 const nextTime = ref<any>([])
 
-const { data: city, isFetching: isFetchingCity } = useQuery({
-  queryKey: ['jadwal', 'kota'],
-  queryFn: async () =>
-    await axios
-      .get('https://api.myquran.com/v2/sholat/kota/semua')
-      .then((res: any) => res.data.data)
-})
+const getUserLoc = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(async (position: any) => {
+      const { latitude, longitude } = position.coords
 
-const cities = computed(() =>
-  city.value?.map((item: City) => ({
-    value: item.id,
-    label: item.lokasi
-  }))
-)
+      try {
+        const response = await axios.get(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10&addressdetails=1`
+        )
+        // Pastikan kita memperbarui loc dengan struktur yang benar
+        loc.value = {
+          ...response.data.address,
+          city: response.data.address.city
+        }
+        await getKota(loc.value.city)
+      } catch (err) {
+        console.error('Gagal mendapatkan nama kota:', err)
+        ElMessage.error('Gagal mendapatkan lokasi')
+      }
+    })
+  }
+}
+
+// const { data: city, isFetching: isFetchingCity } = useQuery({
+//   queryKey: ['jadwal', 'kota'],
+//   queryFn: async () =>
+//     await axios
+//       .get(`https://api.myquran.com/v2/sholat/kota/cari/${loc.value.city}`)
+//       .then((res: any) => res.data.data),
+//   enabled: !!loc.value.city
+// })
+
+// const cities = computed(() =>
+//   city.value?.map((item: City) => ({
+//     value: item.id,
+//     label: item.lokasi
+//   }))
+// )
 
 const refetched = () => {
-  refetch()
+  getJadwal(kota.value[0].id)
   refetchHijr()
 }
 
-const {
-  data: jadwal,
-  isFetching: isFetchingJadwal,
-  refetch
-} = useQuery({
-  queryKey: ['jadwal', kota, date],
-  queryFn: async () => {
+async function getKota(city: string) {
+  try {
+    const response = await axios.get(`https://api.myquran.com/v2/sholat/kota/cari/${city}`)
+
+    if (response.data.status && response.data.data.length > 0) {
+      kota.value = response.data.data
+      // Store cityId in loc
+      loc.value.cityId = response.data.data[0].id
+      // Fetch initial jadwal after getting city ID
+      await getJadwal(response.data.data[0].id)
+    } else {
+      ElMessage.warning('Kota tidak ditemukan')
+    }
+  } catch (error) {
+    console.error('Gagal mengambil data kota:', error)
+    ElMessage.error('Gagal mengambil data kota')
+  } finally {
+  }
+}
+
+async function getJadwal(kota: any) {
+  isFetchingJadwal.value = true
+  try {
     const selectedDate = date.value ? new Date(date.value) : new Date()
     const year = selectedDate.getFullYear()
     const month = selectedDate.getMonth() + 1
     const day = selectedDate.getDate()
-    return await axios
-      .get(`https://api.myquran.com/v2/sholat/jadwal/${kota.value || 1301}/${year}/${month}/${day}`)
+    const response = await axios
+      .get(`https://api.myquran.com/v2/sholat/jadwal/${kota}/${year}/${month}/${day}`)
       .then((res) => res.data.data)
-  },
-  enabled: true
-})
+
+    jadwal.value = response
+  } catch (err) {
+    console.error(err)
+  } finally {
+    isFetchingJadwal.value = false
+  }
+}
 
 const {
   data: hijr,
@@ -228,56 +293,56 @@ const {
 })
 
 // Watch untuk mengupdate selectedCity ketika cities tersedia
-watch(
-  [cities, kota],
-  ([newCities, newKota]) => {
-    if (newCities && newKota) {
-      const found = newCities.find((city: ListItem) => city.value === newKota)
-      if (found) {
-        selectedCity.value = found.label.toLowerCase()
-      }
-    }
-  },
-  { immediate: true }
-)
+// watch(
+//   [cities, kota],
+//   ([newCities, newKota]) => {
+//     if (newCities && newKota) {
+//       const found = newCities.find((city: ListItem) => city.value === newKota)
+//       if (found) {
+//         selectedCity.value = found.label.toLowerCase()
+//       }
+//     }
+//   },
+//   { immediate: true }
+// )
 
 const options = ref<ListItem[]>([])
 const loading = ref(false)
 
-const remoteMethod = (query: string) => {
-  if (query !== '') {
-    loading.value = true
-    setTimeout(() => {
-      loading.value = false
-      options.value =
-        cities.value?.filter((item: ListItem) => {
-          return item.label.toLowerCase().includes(query.toLowerCase())
-        }) || []
-    }, 200)
-  } else {
-    options.value = []
-  }
-}
+// const remoteMethod = (query: string) => {
+//   if (query !== '') {
+//     loading.value = true
+//     setTimeout(() => {
+//       loading.value = false
+//       options.value =
+//         cities.value?.filter((item: ListItem) => {
+//           return item.label.toLowerCase().includes(query.toLowerCase())
+//         }) || []
+//     }, 200)
+//   } else {
+//     options.value = []
+//   }
+// }
 
-const handleCityChange = (value: string) => {
-  if (value && cities.value) {
-    const selected = cities.value.find((city: ListItem) => city.value === value)
-    isOpen.value = false
-    if (selected) {
-      selectedCity.value = selected.label
-    }
-  } else {
-    selectedCity.value = ''
-  }
-  refetch()
-}
+// const handleCityChange = (value: string) => {
+//   if (value && cities.value) {
+//     const selected = cities.value.find((city: ListItem) => city.value === value)
+//     isOpen.value = false
+//     if (selected) {
+//       selectedCity.value = selected.label
+//     }
+//   } else {
+//     selectedCity.value = ''
+//   }
+//   refetch()
+// }
 
 const handleDateChange = (days: number) => {
   const newDate = new Date(date.value)
   newDate.setDate(newDate.getDate() + days)
   date.value = newDate
 
-  refetch()
+  getJadwal(kota.value[0].id)
   refetchHijr()
 }
 
@@ -320,6 +385,8 @@ watch(jadwal, () => {
   calculateCountdown()
   interval = setInterval(calculateCountdown, 1000)
 })
+
+onMounted(() => getUserLoc())
 
 // Computed property untuk memfilter jadwal
 const getFilteredJadwal = computed(() => {
