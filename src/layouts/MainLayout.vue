@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
-import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
+import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { RouterLink, RouterView, useRoute } from 'vue-router'
-import { Menu, X } from 'lucide-vue-next';
-import { useDeviceSet } from '@/stores/device';
+import { Menu, X } from 'lucide-vue-next'
+import { useDeviceSet } from '@/stores/device'
 
 const isMobileMenuOpen = ref(false)
 
@@ -13,9 +13,12 @@ const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value
 }
 
-watch(() => route.fullPath, () => {
-  isMobileMenuOpen.value = false
-})
+watch(
+  () => route.fullPath,
+  () => {
+    isMobileMenuOpen.value = false
+  }
+)
 
 const navLinks = [
   { to: '/quran', label: 'Al Quran' },
@@ -28,30 +31,36 @@ const navLinks = [
 <template>
   <div class="contents sm:p-5">
     <Popover v-slot="{ open, close }" class="fixed top-0 start-0 w-full z-50">
-      <div class="p-5 flex flex-row justify-between items-center bg-green-800 text-white border-b-2 border-gray-300">
+      <div
+        class="p-5 flex flex-row justify-between items-center bg-green-800 text-white border-b-2 border-gray-300"
+      >
         <div class="flex items-center text-3xl md:text-2xl">
           <router-link :to="'/'" class="font-semibold transition duration-300">
-            Muslim Hub
+            Go Hijrah
           </router-link>
         </div>
 
         <div class="flex md:hidden gap-8 items-center">
-          <router-link 
-            v-for="link in navLinks" 
-            :key="link.to" 
-            :to="link.to" 
+          <router-link
+            v-for="link in navLinks"
+            :key="link.to"
+            :to="link.to"
             class="relative group"
-            @click="close" 
+            @click="close"
           >
-            <span class="text-lg hover:text-green-300 transition duration-300">{{ link.label }}</span>
-            <span class="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-green-300"></span>
+            <span class="text-lg hover:text-green-300 transition duration-300">{{
+              link.label
+            }}</span>
+            <span
+              class="block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-green-300"
+            ></span>
           </router-link>
         </div>
 
         <div class="md:flex hidden items-center">
           <PopoverButton
             class="text-white focus:outline-none focus:border-none transition-transform duration-300"
-            @click="toggleMobileMenu" 
+            @click="toggleMobileMenu"
           >
             <X v-if="open" class="w-6 h-6 transition-transform duration-300" />
             <Menu v-else class="w-6 h-6 transition-transform duration-300" />
@@ -59,7 +68,7 @@ const navLinks = [
         </div>
       </div>
 
-      <transition 
+      <transition
         enter-active-class="transition duration-200 ease-out"
         enter-from-class="-translate-y-10 opacity-0"
         enter-to-class="translate-y-0 opacity-100"
@@ -67,15 +76,15 @@ const navLinks = [
         leave-from-class="translate-y-0 opacity-100"
         leave-to-class="-translate-y-10 opacity-0"
       >
-        <PopoverPanel 
-          v-if="open" 
+        <PopoverPanel
+          v-if="open"
           class="md:flex hidden absolute z-50 w-full bg-green-800 shadow-lg"
         >
           <div class="flex flex-col p-4 w-full space-y-2">
-            <router-link 
-              v-for="link in navLinks" 
-              :key="link.to" 
-              :to="link.to" 
+            <router-link
+              v-for="link in navLinks"
+              :key="link.to"
+              :to="link.to"
               @click="close"
               class="text-white text-lg py-2 border-b border-gray-300 transition duration-300 hover:bg-green-700"
             >
@@ -86,6 +95,8 @@ const navLinks = [
       </transition>
     </Popover>
 
-    <RouterView class="min-h-screen px-5 pb-5 pt-24 transition-colors duration-300 bg-emerald-50/90 text-text" />
+    <RouterView
+      class="min-h-screen px-5 pb-5 pt-24 transition-colors duration-300 bg-emerald-50/90 text-text"
+    />
   </div>
 </template>
